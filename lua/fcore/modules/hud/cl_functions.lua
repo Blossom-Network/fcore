@@ -18,26 +18,26 @@ function FCore.HUD.AttachCurrency(value)
 end
 
 function FCore.HUD.FormatMoney(value)
-    if not n then return FCore.HUD.AttachCurrency("0") end
+    if not value then return FCore.HUD.AttachCurrency("0") end
 
-    if n >= 1e14 then return FCore.HUD.AttachCurrency(tostring(n)) end
-    if n <= -1e14 then return "-" .. FCore.HUD.AttachCurrency(tostring(math.abs(n))) end
+    if value >= 1e14 then return FCore.HUD.AttachCurrency(tostring(value)) end
+    if value <= -1e14 then return "-" .. FCore.HUD.AttachCurrency(tostring(math.abs(value))) end
 
-    local negative = n < 0
+    local negative = value < 0
 
-    n = tostring(math.abs(n))
-    local dp = string.find(n, "%.") or #n + 1
+    value = tostring(math.abs(value))
+    local dp = string.find(value, "%.") or #value + 1
 
     for i = dp - 4, 1, -3 do
-        n = n:sub(1, i) .. "," .. n:sub(i + 1)
+        value = value:sub(1, i) .. "," .. value:sub(i + 1)
     end
 
     -- Make sure the amount is padded with zeroes
-    if n[#n - 1] == "." then
-        n = n .. "0"
+    if value[#value - 1] == "." then
+        value = value .. "0"
     end
 
-    return negative and "-" or ""
+    return negative and "-" or "" and FCore.HUD.AttachCurrency(value)
 end
 
 function FCore.HUD.DrawBox(x, y, w, h, color, rtl, rtr, rbl, rbr)
