@@ -4,7 +4,9 @@ FCore.HUD.VCQueue.Players = {}
 local scrw = ScrW()
 local scrh = ScrH()
 
-function FCore.HUD.VCQueue:AddBar(ply)
+function FCore.HUD.VCQueue.AddBar(ply)
+    g_VoicePanelList:SetVisible(false)
+
     for k,v in ipairs(FCore.HUD.VCQueue.Players) do
         if v.ent == ply then
             return false
@@ -14,7 +16,9 @@ function FCore.HUD.VCQueue:AddBar(ply)
     table.insert(FCore.HUD.VCQueue.Players, {ent = ply, lastVoice = 0})
 end
 
-function FCore.HUD.VCQueue:RemoveBar(ply)
+function FCore.HUD.VCQueue.RemoveBar(ply)
+    g_VoicePanelList:SetVisible(false)
+
     for k,v in ipairs(FCore.HUD.VCQueue.Players) do
         if v.ent == ply then
             table.remove(FCore.HUD.VCQueue.Players, k)
@@ -22,24 +26,22 @@ function FCore.HUD.VCQueue:RemoveBar(ply)
     end
 end
 
-function FCore.HUD:StartVoice(ply)
+function FCore.HUD.StartVoice(ply)
 	if !IsValid(ply) then return end
 
-    FCore.HUD.VCQueue:AddBar(ply)
+    FCore.HUD.VCQueue.AddBar(ply)
 end
 
-function FCore.HUD:EndVoice(ply)
+function FCore.HUD.EndVoice(ply)
 	if !IsValid(ply) then return end
 
-    FCore.HUD.VCQueue:RemoveBar(ply)
+    FCore.HUD.VCQueue.RemoveBar(ply)
 end
 
-hook.Add("PlayerStartVoice", "FCore::HUD::VCStart", function(ply) FCore.HUD:StartVoice(ply) end)
-hook.Add("PlayerEndVoice", "FCore::HUD::VCEnd", function(ply) FCore.HUD:EndVoice(ply) end)
-
-hook.Add("HUDPaint", "FCore::HUD::Draw", function()
+function FCore.HUD.DrawVC()
     for k,v in ipairs(FCore.HUD.VCQueue.Players) do
         local ply = v.ent
+        local col = team.GetColor(v.ent:Team())
 
         if !FCore.HUD.VCQueue.Players[k].avatar then
             FCore.HUD.VCQueue.Players[k].avatar = vgui.Create("AvatarImage")
@@ -50,7 +52,7 @@ hook.Add("HUDPaint", "FCore::HUD::Draw", function()
         end
 
         draw.RoundedBox(4, scrw - 208, (scrh - 128) - 52 * k, 200, 48, FCore.HUD.Config.Colors.secondary)
-        draw.RoundedBox(4, scrw - 208, (scrh - 82) - 52 * k, 200, 3, Color(96,255,96,Lerp((SysTime() - v.lastVoice) * 4, 255, 0)))
+        draw.RoundedBox(4, scrw - 208, (scrh - 82) - 52 * k, 200, 3, Color(col.r,col.g,col.b,Lerp((SysTime() - v.lastVoice) * 4, 255, 0)))
 
         draw.RoundedBox(4, scrw - 204, (scrh - 124) - 52 * k, 40, 40, FCore.HUD.Config.Colors.main)
         FCore.HUD.VCQueue.Players[k].avatar:PaintManual()
@@ -62,6 +64,8 @@ hook.Add("HUDPaint", "FCore::HUD::Draw", function()
             FCore.HUD.VCQueue.Players[k].lastVoice = SysTime()
         end
     end
-end)
+end
 
-g_VoicePanelList:SetVisible(false)
+hook.Add("PlayerStartVoice", "FCore::HUD::VCStart", FCore.HUD.StartVoice)
+hook.Add("PlayerEndVoice", "FCore::HUD::VCEnd", FCore.HUD.EndVoice)
+hook.Add("HUDPaint", "FCore::HUD::Draw", FCore.HUD.DrawVC)

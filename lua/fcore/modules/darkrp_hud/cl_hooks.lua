@@ -1,4 +1,6 @@
 hook.Add("FCore_ReplaceHUD", "FCore::HUD::Hooks", function()
+    if (engine.ActiveGamemode() ~= "darkrp") then return end
+
     hook.Add("HUDPaint", "FCore::HUD::Core", FCore.HUD.Hook)
     hook.Add("PostDrawOpaqueRenderables", "FCore::HUD::Entity", FCore.HUD.DrawEntity)
 
