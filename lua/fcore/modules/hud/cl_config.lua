@@ -47,6 +47,13 @@ FCore.HUD.Config.Icons = {
             y = 0
         }
     },
+    user = {
+        text = utf8.char(0xf007),
+        margin = {
+            x = 0,
+            y = 0
+        }
+    },
     users = {
         text = utf8.char(0xf0c0),
         margin = {

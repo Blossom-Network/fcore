@@ -82,37 +82,30 @@ function FCore.HUD.EntityPlayer(self)
 end
 
 function FCore.HUD.drawPlayerInfo(ply)
-	local pos = ply:EyePos() - Vector(0, 0, 0)
+	local pos = ply:GetPos() + ply:OBBCenter() + Vector(0, 0, 0)
     local ang = Angle(0, LocalPlayer():EyeAngles().y - 90, 90)
     pos.z = pos.z + 15
 
-    surface.SetFont("FCore.HUD.Open Sans.24.Regular")
+    surface.SetFont("FCore_Open Sans_24_300")
 
     local nw, nh = surface.GetTextSize(ply:Name())
     local jw, jh = surface.GetTextSize(ply:getDarkRPVar("job"))
 
-    local size = {
-        w = math.max(nw, jw) + 32,
-        h = 50
-    }
-
-    if !FCore.HUD.PlayerAvatar then
-        FCore.HUD.PlayerAvatar = vgui.Create("AvatarImage")
-        FCore.HUD.PlayerAvatar:SetSize(64, 64)
-        FCore.HUD.PlayerAvatar:SetPlayer(ply, 184)
-
-        FCore.HUD.PlayerAvatar:SetPaintedManually(true)
-    end
+    local x = 256
 
     cam.Start3D2D(pos, ang, 0.1)
-        draw.RoundedBox(4, -38, -68, 76, 76, FCore.HUD.Config.Colors.main)
-        draw.RoundedBox(4, -size.w / 2, size.h / 2, size.w, size.h, FCore.HUD.Config.Colors.secondary)
 
-        draw.DrawText(ply:Name(), "FCore.HUD.Open Sans.24.Regular", 0, 32, FCore.HUD.Config.Colors.white, TEXT_ALIGN_CENTER)
-        draw.DrawText(ply:getDarkRPVar("job"), "FCore.HUD.Open Sans.24.Regular", 0, 48, FCore.HUD.Config.Colors.white, TEXT_ALIGN_CENTER)
-        FCore.HUD.PlayerAvatar:SetPos(-32, -63.9)
+        draw.RoundedBox(4, x + -125, -80, 250, 50, FCore.HUD.Config.Colors.secondary)
+        FCore.HUD.DrawIconBox(x + -112, -70, "user", 24, FCore.HUD.Config.Colors.main, FCore.HUD.Config.Colors.text, 6, 3, 18)
+        draw.DrawText(FCore.HUD.Text(ply:Name(), 18), "FCore_Open Sans_24_300", x + 10, -66, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
 
-        FCore.HUD.PlayerAvatar:PaintManual()
+        draw.RoundedBox(4, x + -125, -25, 250, 50, FCore.HUD.Config.Colors.secondary)
+        FCore.HUD.DrawIconBox(x + -112, -15, "suitcase", 24, FCore.HUD.Config.Colors.main, FCore.HUD.Config.Colors.text, 3, 3, 18)
+        draw.DrawText(ply:getDarkRPVar("job"), "FCore_Open Sans_24_300", x + 8, -11, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+
+        draw.RoundedBox(4, x + -125, 30, 250, 50, FCore.HUD.Config.Colors.secondary)
+        FCore.HUD.DrawIconBox(x + -112, 40, "heart", 24, FCore.HUD.Config.Colors.main, FCore.HUD.Config.Colors.text, 3, 3, 18)
+        draw.DrawText(ply:Health(), "FCore_Open Sans_24_300", x + 8, 42, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     cam.End3D2D()
 end
 
@@ -130,7 +123,7 @@ function FCore.HUD.DrawEntity()
 
         if GAMEMODE.Config.globalshow then
             FCore.HUD.drawPlayerInfo(ply)
-        elseif hisPos:DistToSqr(shootPos) < 160000 then
+        elseif hisPos:DistToSqr(shootPos) < 100000 then
             local pos = hisPos - shootPos
             local unitPos = pos:GetNormalized()
             if unitPos:Dot(aimVec) > 0.95 then
