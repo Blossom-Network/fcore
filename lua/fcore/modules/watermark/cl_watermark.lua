@@ -1,5 +1,4 @@
 local scrw = ScrW()
-local scrh = ScrH()
 
 hook.Add("HUDPaint", "FCore::Watermark", function()
     draw.RoundedBoxEx(8, scrw / 2 - 100, 0, 200, 47.5, FCore.HUD.Config.Colors.secondary, false, false, true, true)

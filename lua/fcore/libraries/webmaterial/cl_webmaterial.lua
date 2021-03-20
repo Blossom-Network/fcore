@@ -8,7 +8,7 @@ function FCore.WebMaterial.Get(url, w, h)
     local WebPanel = vgui.Create("HTML")
     WebPanel:SetAlpha(0)
     WebPanel:SetSize(tonumber(w), tonumber(h))
-	WebPanel:SetHTML([[<html>
+    WebPanel:SetHTML([[<html>
 		<head>
 			<style>
 				* { overflow: hidden; }

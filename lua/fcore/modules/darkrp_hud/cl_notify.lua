@@ -62,7 +62,6 @@ function notification.AddProgress( id, text, frac )
 		if v.id == id then
 			v.text = text
 			v.progress = frac
-			
 			return
 		end
 	end
@@ -87,7 +86,7 @@ function notification.AddProgress( id, text, frac )
 		time = math.huge,
 
 		progress = math.Clamp( frac or 0, 0, 1 ),
-	} )	
+	})
 end
 
 function notification.Kill( id )

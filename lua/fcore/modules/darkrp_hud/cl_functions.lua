@@ -140,7 +140,7 @@ function FCore.HUD.DrawInfo(x, y, icon, w, h, bgColor, color, align)
     if !font then font = "FCore_Open Sans_18_300" end
 
     surface.SetFont(font)
-    local tw, th = surface.GetTextSize(text)
+    local _,th = surface.GetTextSize(text)
 
     FCore.HUD.DrawBox(x, y, w, h)
     FCore.HUD.DrawIcon(x + 8, y + 8, icon, iconSize, bgColor)
