@@ -7,8 +7,8 @@ FCore.HUD.Config.Size = {
 }
 
 FCore.HUD.Config.Margin = {
-    x = 16,
-    y = 16
+    x = 8,
+    y = 8
 }
 
 FCore.HUD.Config.Icons = {

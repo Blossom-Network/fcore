@@ -43,7 +43,7 @@ function FCore.HUD.Player()
     
     // HP
     FCore.HUD.DrawBarHorizontal(x + (w / 3) + 16, y + 12, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.HUD.Config.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.transparent)
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 16, y + 12, 18, ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), FCore.HUD.Config.Colors.health, "", "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.text)
+    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 16, y + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), FCore.HUD.Config.Colors.health, "", "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.text)
     
     draw.DrawText(LocalPlayer():Health(), "FCore_Open Sans_14_300", x + (w / 3) + 16 + 8, y + FCore.HUD.Config.Size.h / 2 - 16 - 7, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     
@@ -51,7 +51,7 @@ function FCore.HUD.Player()
 
     // Armor
     FCore.HUD.DrawBarHorizontal(x + (w / 3) + 40, y + 12, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.HUD.Config.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.transparent)
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 40, y + 12, 18, ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), FCore.HUD.Config.Colors.armor, LocalPlayer():Armor(), "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.text)
+    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 40, y + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), FCore.HUD.Config.Colors.armor, LocalPlayer():Armor(), "FCore_Open Sans_14_300", FCore.HUD.Config.Colors.text)
     
     draw.DrawText(LocalPlayer():Armor(), "FCore_Open Sans_14_300", x + (w / 3) + 40 + 8, y + FCore.HUD.Config.Size.h / 2 - 16 - 7, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
 
@@ -74,7 +74,7 @@ function FCore.HUD.Player()
 
     // Job
     FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 140, "users", 18, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 2, 2, 14)
-    draw.DrawText("Not Implemented", "FCore_Open Sans_16_300", x + (w / 3) + 116, y + 144, FCore.HUD.Config.Colors.text)
+    draw.DrawText("NULL", "FCore_Open Sans_16_300", x + (w / 3) + 116, y + 144, FCore.HUD.Config.Colors.text)
 end
 
 function FCore.HUD.EntityPlayer(self)
