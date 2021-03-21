@@ -2,8 +2,8 @@ FCore.HUD = FCore.HUD or {}
 FCore.HUD.Config = {}
 
 FCore.HUD.Config.Size = {
-    w = 375,
-    h = 180
+    w = 275,
+    h = 150
 }
 
 FCore.HUD.Config.Margin = {
