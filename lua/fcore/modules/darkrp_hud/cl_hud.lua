@@ -9,7 +9,7 @@ function FCore.HUD.Player()
 
     local nickname = FCore.HUD.Text(LocalPlayer():Name(), 12)
     surface.SetFont("FCore_Open Sans_16_300")
-    local nw,nh = surface.GetTextSize(nickname)
+    local _, nh = surface.GetTextSize(nickname)
 
     surface.SetFont("FCore_Open Sans_18_300")
     local sw, sh = surface.GetTextSize("Blossom Network")
@@ -79,20 +79,18 @@ function FCore.HUD.Player()
     draw.DrawText("NULL", "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 115, FCore.HUD.Config.Colors.text)
 end
 
-function FCore.HUD.EntityPlayer(self)
-
-end
-
 function FCore.HUD.drawPlayerInfo(ply)
     local pos = ply:GetPos() + ply:OBBCenter() + Vector(0, 0, 0)
-    local ang = Angle(0, LocalPlayer():EyeAngles().y - 90, 90)
     pos.z = pos.z + 15
 
     surface.SetFont("FCore_Open Sans_24_300")
 
     local x = 256
 
-    cam.Start3D2D(pos, ang, 0.1)
+    // #onelinegang
+    local lookAngle = (Vector(LocalPlayer():GetPos().x, LocalPlayer():GetPos().y, 0) - Vector(ply:GetPos().x, ply:GetPos().y, 0)):Angle()
+
+    cam.Start3D2D(pos, lookAngle + Angle(0, 90, 90), 0.1)
 
         draw.RoundedBox(4, x + -125, -80, 250, 50, FCore.HUD.Config.Colors.secondary)
         FCore.HUD.DrawIconBox(x + -112, -70, "user", 24, FCore.HUD.Config.Colors.main, FCore.HUD.Config.Colors.text, 6, 3, 18)
