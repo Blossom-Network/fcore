@@ -70,7 +70,7 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         if v.attackerAvatar then
             draw.RoundedBox(4, v.x + 6, v.y + 6, 40, 40, FCore.HUD.Config.Colors.main)
             v.attackerAvatar:PaintManual()
-            v.attackerAvatar:SetPos(v.x + 8, v.y + 9)
+            v.attackerAvatar:SetPos(v.x + 8, v.y + 8)
 
             draw.DrawText(v.attacker:Name(), "FCore_Open Sans_18_300", v.x + 48, v.y + 16, FCore.HUD.Config.Colors.text)
         else
@@ -78,7 +78,7 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         end
 
         if v.victimAvatar then
-            draw.RoundedBox(4, v.x + v.w - select(1, surface.GetTextSize(v.victim:Name())) - 50, v.y + 6, 40, 40, FCore.HUD.Config.Colors.main)
+            draw.RoundedBox(4, v.x + v.w - select(1, surface.GetTextSize(v.victim:Name())) - 50, v.y + 7, 40, 40, FCore.HUD.Config.Colors.main)
 
             v.victimAvatar:PaintManual()
 
