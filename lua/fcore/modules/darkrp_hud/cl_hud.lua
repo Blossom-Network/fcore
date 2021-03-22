@@ -66,15 +66,15 @@ function FCore.HUD.Player()
     FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 16, "suitcase", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(LocalPlayer():getDarkRPVar("job"), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 20, FCore.HUD.Config.Colors.text)
 
-    // Job
+    // Money
     FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("money")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 50, FCore.HUD.Config.Colors.text)
 
-    // Job
+    // Salary
     FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("salary")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 81, FCore.HUD.Config.Colors.text)
 
-    // Job
+    // Organisation
     FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 112, "users", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText("NULL", "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 115, FCore.HUD.Config.Colors.text)
 end
