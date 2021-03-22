@@ -2,6 +2,7 @@ FCore.Guayando = {}
 
 function FCore.Guayando.Stage1()
     hook.Add("HUDPaint", "FCore::Guayando", function()
+        if FCore.Guayando.Music:GetState() != 1 then FCore.Guayando.Stop() end
         if FCore.Guayando.Music:GetTime() > 3 then
             local fft = {}
             FCore.Guayando.Music:FFT(fft, FFT_16384)
@@ -20,8 +21,6 @@ function FCore.Guayando.Stage1()
             surface.DrawRect(0, 0, ScrW(), ScrH())
             draw.DrawText("Guayando", "FCore_Open Sans_72_700", ScrW() - ScrW() / 2, ScrH() / 2 - 34 + math.sin(CurTime() * 4) * 16, Color( 0, 0, 0, 150 ), TEXT_ALIGN_CENTER)
             draw.DrawText("Guayando", "FCore_Open Sans_72_700", ScrW() - ScrW() / 2, ScrH() / 2 - 36 + math.sin(CurTime() * 4) * 16, HSVToColor(CurTime() * 8 % 360, 1, 1), TEXT_ALIGN_CENTER)
-        elseif FCore.Guayando.Music:GetTime() >= FCore.Guayando.Music:GetLength() then
-            FCore.Guayando.Stop()
         end
     end)
 end

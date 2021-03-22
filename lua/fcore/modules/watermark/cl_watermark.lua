@@ -1,8 +1,6 @@
-local scrw = ScrW()
-
 hook.Add("HUDPaint", "FCore::Watermark", function()
-    draw.RoundedBoxEx(8, scrw / 2 - 100, 0, 200, 47.5, FCore.HUD.Config.Colors.secondary, false, false, true, true)
+    draw.RoundedBox(4, 8, 8, 100, 24, FCore.HUD.Config.Colors.secondary)
 
-    draw.DrawText("Blossom Network", "FCore_Open Sans_24_500", scrw - scrw / 2, 5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER)
-    draw.DrawText("development server", "FCore_Open Sans_14_500", scrw - scrw / 2, 25, Color( 255, 64, 64, 255 ), TEXT_ALIGN_CENTER)
+    draw.DrawText(utf8.char(0xf126), "FCore_FontAwesome_14_500", 16, 13, FCore.HUD.Config.Colors.white, TEXT_ALIGN_LEFT)
+    draw.DrawText("22/03/2021", "FCore_Open Sans_14_500", 62, 12, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
 end)

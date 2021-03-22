@@ -25,11 +25,11 @@ function FCore.HUD.Player()
     draw.DrawText("Blossom Network", "FCore_Open Sans_18_300", x + 8 + sw / 2, y - sh + 4, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
 
     // Avatar
-    FCore.HUD.DrawBox(x + 9, y + 24, 76, 76, FCore.HUD.Config.Colors.secondary)
+    FCore.HUD.DrawBox(x + 16, y + 24, 76, 76, FCore.HUD.Config.Colors.secondary)
     if !FCore.HUD.Avatar then
         FCore.HUD.Avatar = vgui.Create("AvatarImage")
         FCore.HUD.Avatar:SetSize(70, 70)
-        FCore.HUD.Avatar:SetPos(x + 12, y + 27)
+        FCore.HUD.Avatar:SetPos(x + 19, y + 27)
         FCore.HUD.Avatar:SetPlayer(LocalPlayer(), 184)
         FCore.HUD.Avatar:SetPaintedManually(true)
         FCore.HUD.Avatar:ParentToHUD()
@@ -60,22 +60,22 @@ function FCore.HUD.Player()
     FCore.HUD.DrawIcon(x + (w / 3) + 39.5, y + ((FCore.HUD.Config.Size.h - 16) - 16), "armor", 14, FCore.HUD.Config.Colors.secondary, TEXT_ALIGN_LEFT)
 
     // Section Info
-    FCore.HUD.DrawBox(x + (w / 3) + 76, y + 8, 100, FCore.HUD.Config.Size.h - 16, FCore.HUD.Config.Colors.main)
+    FCore.HUD.DrawBox(x + (w / 3) + 76, y + 8, 133, FCore.HUD.Config.Size.h - 16, FCore.HUD.Config.Colors.main)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 16, "suitcase", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 1, 1, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 16, "suitcase", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(LocalPlayer():getDarkRPVar("job"), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 20, FCore.HUD.Config.Colors.text)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 1, 2, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 2, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("money")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 50, FCore.HUD.Config.Colors.text)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 4, 1, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 3, 1, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("salary")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 81, FCore.HUD.Config.Colors.text)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 112, "users", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 1, 1, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 112, "users", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText("NULL", "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 115, FCore.HUD.Config.Colors.text)
 end
 
@@ -143,8 +143,64 @@ function FCore.HUD.DrawEntity()
     end
 end
 
+function FCore.HUD.Agenda()
+    local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_Agenda")
+    if shouldDraw == false or !LocalPlayer():getAgendaTable() then return end
+
+    surface.SetFont("FCore_Open Sans_18_300")
+    local sw, sh = surface.GetTextSize("Ogłoszenia")
+
+    sw = sw + 32
+    sh = sh + 8
+
+    // Background
+    FCore.HUD.DrawBox(12, 36, sw, sh, FCore.HUD.Config.Colors.secondary, true, true, false, false)
+    draw.DrawText("Ogłoszenia", "FCore_Open Sans_18_300", 12 + sw / 2, 39, FCore.HUD.Config.Colors.text, 1)
+
+    FCore.HUD.AgendaText = DarkRP.textWrap((LocalPlayer():getDarkRPVar("agenda")):gsub("//", "\n"):gsub("\\n", "\n"), "FCore_Open Sans_18_300", 314)
+    local _,ah = surface.GetTextSize(FCore.HUD.AgendaText)
+
+    ah = ah + 8
+    draw.RoundedBox(4, 4, 34 + sh, 330, ah, FCore.HUD.Config.Colors.main)
+    draw.DrawNonParsedText(FCore.HUD.AgendaText, "FCore_Open Sans_18_300", 22, 62, FCore.HUD.Config.Colors.text, 0)
+end
+
+function FCore.HUD.AmmoHUD()
+    local wep = LocalPlayer():GetActiveWeapon()
+    local wepText = string.upper(wep:GetPrintName())
+    local wepAmmo = 0
+    local wepSecondary = 0
+
+    if wep.Primary and wep.Primary.ClipSize > 0 then
+        wepAmmo = wep:Clip1()
+        wepSecondary = wep:Ammo1()
+    else
+        return false
+    end
+
+    surface.SetFont("FCore_Open Sans_14_300")
+    local sw, sh = surface.GetTextSize(wepText)
+
+    sw = sw + 32
+    sh = sh + 8
+
+    local x = ScrW() - FCore.HUD.GetPos().x
+    local y = ScrH() - 83
+
+    draw.RoundedBoxEx(4, x - 75 - sw / 2, y - sh, sw, sh, FCore.HUD.Config.Colors.secondary, true, true, false, false)
+    draw.DrawText(wepText, "FCore_Open Sans_14_300", x - 75, y - sh + 3, FCore.HUD.Config.Colors.text, 1)
+
+    draw.RoundedBoxEx(4, x - 150, y, 75, 75, FCore.HUD.Config.Colors.main, true, false, true, false)
+    draw.DrawText(wepAmmo, "FCore_Open Sans_36_300", x - 112.5, y - sh + 40, FCore.HUD.Config.Colors.text, 1)
+
+    draw.RoundedBoxEx(4, x - 75, y, 75, 75, FCore.HUD.Config.Colors.secondary, false, true, false, true)
+    draw.DrawText(wepSecondary, "FCore_Open Sans_36_300", x - 37.5, y - sh + 40, FCore.HUD.Config.Colors.text, 1)
+end
+
 function FCore.HUD.Hook()
     FCore.HUD.Player()
+    FCore.HUD.Agenda()
+    FCore.HUD.AmmoHUD()
 end
 
 hook.Run("FCore_ReplaceHUD")

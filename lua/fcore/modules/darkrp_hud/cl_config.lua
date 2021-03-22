@@ -2,7 +2,7 @@ FCore.HUD = FCore.HUD or {}
 FCore.HUD.Config = {}
 
 FCore.HUD.Config.Size = {
-    w = 275,
+    w = 325,
     h = 150
 }
 
