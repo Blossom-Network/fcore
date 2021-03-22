@@ -41,8 +41,11 @@ function GAMEMODE:AddDeathNotice(attacker, attackerTeam, inflictor, victim, vict
     table.insert(FCore.Killfeed.Deaths, tmp)
 end
 
-hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()   
+hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
     for k,v in ipairs(FCore.Killfeed.Deaths) do
+        if type(v.attacker) == "Player" and !IsValid(v.attacker) then continue end
+        if !IsValid(v.victim) then continue end
+
         surface.SetFont("FCore_Open Sans_18_300")
         surface.SetTextColor(FCore.HUD.Config.Colors.text)
 

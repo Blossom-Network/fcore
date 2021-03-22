@@ -1,4 +1,34 @@
 FCore.Scoreboard = {}
+FCore.Scoreboard.Commands = {
+    {
+        text = "Slay",
+        func = function(self) 
+            RunConsoleCommand("fadmin", "slay", self.ply:Name())
+        end,
+        check = function() return LocalPlayer():IsAdmin() end
+    },
+    {
+        text = "Kick",
+        func = function(self) 
+            RunConsoleCommand("fadmin", "kick", self.ply:Name())
+        end,
+        check = function() return LocalPlayer():IsAdmin() end
+    },
+    {
+        text = "Goto",
+        func = function(self) 
+            RunConsoleCommand("fadmin", "goto", self.ply:Name())
+        end,
+        check = function() return LocalPlayer():IsAdmin() end
+    },
+    {
+        text = "Bring",
+        func = function(self) 
+            RunConsoleCommand("fadmin", "bring", self.ply:Name())
+        end,
+        check = function() return LocalPlayer():IsAdmin() end
+    }
+}
 
 function FCore.Scoreboard.Create()
     FCore.Scoreboard.Instance = vgui.Create("DFrame")
@@ -20,7 +50,6 @@ function FCore.Scoreboard.Create()
     function FCore.Scoreboard.Instance.Header:Paint(w, h)
         draw.DrawText("Blossom Network", "FCore_Open Sans_24_700", w / 2, 18, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     end
-
 
     FCore.Scoreboard.Instance.List = vgui.Create("DScrollPanel", FCore.Scoreboard.Instance)
     FCore.Scoreboard.Instance.List:Dock(FILL)
@@ -49,6 +78,8 @@ function FCore.Scoreboard.Remove()
 end
 
 function FCore.Scoreboard.Populate()
+    FCore.Scoreboard.Instance.List:GetCanvas():Clear()
+
     local header = FCore.Scoreboard.Instance.List:Add("DPanel")
     local hw = ScrW() / 2.25
 
@@ -73,7 +104,7 @@ function FCore.Scoreboard.Populate()
     header.Name:Dock(LEFT)
 
     function header.Name:Paint(w, h)
-        draw.DrawText("Name", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Nick", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Job = vgui.Create("DPanel", header)
@@ -81,7 +112,7 @@ function FCore.Scoreboard.Populate()
     header.Job:Dock(LEFT)
 
     function header.Job:Paint(w, h)
-        draw.DrawText("Job", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Praca", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     hw = hw - ((hw / 3) * 2)
@@ -91,7 +122,7 @@ function FCore.Scoreboard.Populate()
     header.Kills:Dock(LEFT)
 
     function header.Kills:Paint(w, h)
-        draw.DrawText("Kills", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Fragi", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Deaths = vgui.Create("DPanel", header)
@@ -99,7 +130,7 @@ function FCore.Scoreboard.Populate()
     header.Deaths:Dock(LEFT)
     
     function header.Deaths:Paint(w, h)
-        draw.DrawText("Deaths", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Śmierci", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Ping = vgui.Create("DPanel", header)
@@ -116,14 +147,41 @@ function FCore.Scoreboard.Populate()
 
         plyPanel:SetSize(FCore.Scoreboard.Instance.List:GetWide() / 2, 48)
         plyPanel:Dock(TOP)
-        plyPanel.DoClick = function()
-            print("hi")
-        end
 
         function plyPanel:Paint(w, h)
+            if !IsValid(ply) then self:Remove() end
+
             if k % 2 == 1 then
                 surface.SetDrawColor(255, 255, 255, 5)
                 surface.DrawRect(0, 0, w, h)
+            end
+        end
+
+        plyPanel.Commands = vgui.Create("DPanel", plyPanel)
+        plyPanel.Commands:SetSize(ScrW() / 2.25, 32)
+        plyPanel.Commands:Dock(BOTTOM)
+        plyPanel.Commands:SetVisible(false)
+        plyPanel.Commands:DockPadding(4, 4, 4, 4)
+        function plyPanel.Commands:Paint(w, h)
+            surface.SetDrawColor(Color(42,42,42))
+
+            surface.DrawRect(0, 0, w, h)
+        end
+
+        for _,v in ipairs(FCore.Scoreboard.Commands) do
+            if v.check() then
+                local command = vgui.Create("DButton", plyPanel.Commands)
+                command.ply = ply
+                command:SetText(v.text)
+                command:SetTextColor(Color(255,255,255))
+                command:Dock(LEFT)
+                command.DoClick = v.func
+
+                function command:Paint(w, h)
+                    surface.SetDrawColor(Color(64,64,64))
+        
+                    surface.DrawRect(0, 0, w, h)
+                end
             end
         end
 
@@ -190,7 +248,13 @@ function FCore.Scoreboard.Populate()
         plyPanel:SetText("")
         plyPanel.Click.Paint = function() end
         function plyPanel.Click.DoClick()
-            print(k, "hi")
+            if !plyPanel.Commands:IsVisible() then
+                plyPanel:SetSize(plyPanel:GetWide(), plyPanel:GetTall() + 32)
+                plyPanel.Commands:SetVisible(true)
+            else
+                plyPanel:SetSize(plyPanel:GetWide(), plyPanel:GetTall() - 32)
+                plyPanel.Commands:SetVisible(false)
+            end
         end
     end
 end

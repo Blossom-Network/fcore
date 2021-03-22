@@ -48,6 +48,7 @@ end
 
 function FCore.HUD.DrawVC()
     for k,v in ipairs(FCore.HUD.VCQueue.Players) do
+        if !IsValid(v.ent) then table.remove(k, FCore.HUD.VCQueue.Players) end
 
         v.x = Lerp( FrameTime() * 10, v.x, v.active and ScrW() - v.w - defaultProperties.marginX or ScrW() + defaultProperties.x )
         v.y = Lerp( FrameTime() * 10, v.y, (ScrH() - v.h) - ((k - 1) * v.h) - (k * defaultProperties.marginY) )

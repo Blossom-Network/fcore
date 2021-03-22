@@ -171,6 +171,8 @@ end
 
 function FCore.HUD.AmmoHUD()
     local wep = LocalPlayer():GetActiveWeapon()
+    if !IsValid(wep) then return false end
+
     local wepText = string.upper(wep:GetPrintName())
     local wepAmmo = 0
     local wepSecondary = 0
