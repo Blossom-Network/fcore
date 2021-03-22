@@ -34,14 +34,14 @@ FCore.HUD.Config.Icons = {
         }
     },
     cash = {
-        text = utf8.char(0xf0d6),
+        text = utf8.char(0xf19c),
         margin = {
             x = 0,
             y = 0
         }
     },
     dollar = {
-        text = utf8.char(0xf155),
+        text = utf8.char(0xf0d6),
         margin = {
             x = 0,
             y = 0

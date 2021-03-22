@@ -90,7 +90,7 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         if v.attacker != "" then
             draw.DrawText(utf8.char(0xf05b), "FCore_FontAwesome_24_300", v.x + v.w / 2 - 10, v.y + 13, FCore.HUD.Config.Colors.text, TEXT_ALIGN_LEFT)
         else
-            draw.DrawText(utf8.char(0xf05b), "FCore_FontAwesome_24_300", v.x + FCore.Killfeed.Config.Margin + 6, v.y + 13, FCore.HUD.Config.Colors.text, TEXT_ALIGN_LEFT)
+            draw.DrawText(utf8.char(0xf21e), "FCore_FontAwesome_24_300", v.x + FCore.Killfeed.Config.Margin + 6, v.y + 14, FCore.HUD.Config.Colors.text, TEXT_ALIGN_LEFT)
         end
     end
 

@@ -67,11 +67,11 @@ function FCore.HUD.Player()
     draw.DrawText(LocalPlayer():getDarkRPVar("job"), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 20, FCore.HUD.Config.Colors.text)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 2, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("money")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 50, FCore.HUD.Config.Colors.text)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 3, 1, 12)
+    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.HUD.Config.Colors.secondary, FCore.HUD.Config.Colors.text, 0, 1, 12)
     draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("salary")), "FCore_Open Sans_14_300", x + (w / 3) + 110, y + 81, FCore.HUD.Config.Colors.text)
 
     // Job
@@ -154,15 +154,19 @@ function FCore.HUD.Agenda()
     sh = sh + 8
 
     // Background
+    if !LocalPlayer():getDarkRPVar("agenda") then return end
+
+    FCore.HUD.AgendaText = DarkRP.textWrap((LocalPlayer():getDarkRPVar("agenda")):gsub("//", "\n"):gsub("\\n", "\n"), "FCore_Open Sans_18_300", 314)
+    local aw,ah = surface.GetTextSize(FCore.HUD.AgendaText)
+
+    aw = aw + 32
+    ah = ah + 8
+
     FCore.HUD.DrawBox(12, 36, sw, sh, FCore.HUD.Config.Colors.secondary, true, true, false, false)
     draw.DrawText("Ogłoszenia", "FCore_Open Sans_18_300", 12 + sw / 2, 39, FCore.HUD.Config.Colors.text, 1)
 
-    FCore.HUD.AgendaText = DarkRP.textWrap((LocalPlayer():getDarkRPVar("agenda")):gsub("//", "\n"):gsub("\\n", "\n"), "FCore_Open Sans_18_300", 314)
-    local _,ah = surface.GetTextSize(FCore.HUD.AgendaText)
-
-    ah = ah + 8
-    draw.RoundedBox(4, 4, 34 + sh, 330, ah, FCore.HUD.Config.Colors.main)
-    draw.DrawNonParsedText(FCore.HUD.AgendaText, "FCore_Open Sans_18_300", 22, 62, FCore.HUD.Config.Colors.text, 0)
+    draw.RoundedBox(4, 4, 34 + sh, 336, ah, FCore.HUD.Config.Colors.main)
+    draw.DrawNonParsedText(FCore.HUD.AgendaText, "FCore_Open Sans_18_300", 20, 63, FCore.HUD.Config.Colors.text, 0)
 end
 
 function FCore.HUD.AmmoHUD()
@@ -198,9 +202,11 @@ function FCore.HUD.AmmoHUD()
 end
 
 function FCore.HUD.Hook()
-    FCore.HUD.Player()
-    FCore.HUD.Agenda()
-    FCore.HUD.AmmoHUD()
+    if LocalPlayer():Alive() and IsValid(LocalPlayer()) then
+        FCore.HUD.Player()
+        FCore.HUD.Agenda()
+        FCore.HUD.AmmoHUD()
+    end
 end
 
 hook.Run("FCore_ReplaceHUD")

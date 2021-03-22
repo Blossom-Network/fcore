@@ -19,7 +19,9 @@ function FCore.HUD.VCQueue.AddBar(ply)
         end
     end
 
-    table.insert(FCore.HUD.VCQueue.Players, {ent = ply, lastVoice = 0, x = defaultProperties.x, y = defaultProperties.y, w = defaultProperties.w, h = defaultProperties.h, active = true})
+    local y = (ScrH() - defaultProperties.h) - ((#FCore.HUD.VCQueue.Players - 1) * defaultProperties.h) - (#FCore.HUD.VCQueue.Players * defaultProperties.marginY) - 58
+
+    table.insert(FCore.HUD.VCQueue.Players, {ent = ply, lastVoice = 0, x = defaultProperties.x, y = y, w = defaultProperties.w, h = defaultProperties.h, active = true})
 end
 
 function FCore.HUD.VCQueue.RemoveBar(ply)
@@ -66,7 +68,7 @@ function FCore.HUD.DrawVC()
 
         draw.RoundedBox(4, v.x - 4, v.y - 124, 40, 40, FCore.HUD.Config.Colors.main)
         FCore.HUD.VCQueue.Players[k].avatar:PaintManual()
-        FCore.HUD.VCQueue.Players[k].avatar:SetPos(v.x - 2, v.y - 122)
+        FCore.HUD.VCQueue.Players[k].avatar:SetPos(v.x - 2, v.y - 121)
 
         draw.DrawText(v.ent:Name(), "FCore_Open Sans_18_300", v.x + 42, v.y - 113, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT)
 
