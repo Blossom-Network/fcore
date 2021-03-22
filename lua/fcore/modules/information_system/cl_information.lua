@@ -15,6 +15,8 @@ hook.Add("PostDrawOpaqueRenderables", "FCore::HUD::Entity", function()
         if v.time + 300 < os.time() then table.remove(FCore.InformationSystem.Requests, k) continue end
 
         cam.Start3D2D(v.pos, Angle(0, LocalPlayer():EyeAngles().y - 90, 90), 0.1)
+            cam.IgnoreZ(true)
+            
             draw.RoundedBox(0, 0, 0, 64, 64, Color(255,255,255))
         cam.End3D2D()
     end
