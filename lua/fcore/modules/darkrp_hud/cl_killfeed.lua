@@ -47,12 +47,12 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         if !IsValid(v.victim) then continue end
 
         surface.SetFont("FCore_Open Sans_18_300")
-        surface.SetTextColor(FCore.HUD.Config.Colors.text)
+        surface.SetTextColor(FCore.Colors.text)
 
         v.x = Lerp( FrameTime() * 10, v.x, v.time > CurTime() and ScrW() - v.w - FCore.Killfeed.Config.Margin or ScrW() + v.w )
         v.y = Lerp( FrameTime() * 10, v.y, ((k - 1) * v.h) + (k * FCore.Killfeed.Config.Margin ))
 
-        draw.RoundedBox(4, v.x, v.y, v.w, v.h, FCore.HUD.Config.Colors.secondary)
+        draw.RoundedBox(4, v.x, v.y, v.w, v.h, FCore.Colors.secondary)
 
         if type(v.attacker) == "Player" and !v.attackerAvatar then
             v.attackerAvatar = vgui.Create("AvatarImage")
@@ -72,7 +72,7 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         end
 
         if v.attackerAvatar then
-            draw.RoundedBox(4, v.x + FCore.Killfeed.Config.Margin - 2, v.y + 5, 40, 40, FCore.HUD.Config.Colors.main)
+            draw.RoundedBox(4, v.x + FCore.Killfeed.Config.Margin - 2, v.y + 5, 40, 40, FCore.Colors.main)
             v.attackerAvatar:SetPos(v.x + FCore.Killfeed.Config.Margin, v.y + 8)
             v.attackerAvatar:PaintManual()
 
@@ -83,7 +83,7 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
             surface.DrawText(v.attacker)
         end
 
-        draw.RoundedBox(4, v.x + v.w - FCore.Killfeed.Config.Margin - 38, v.y + 5, 40, 40, FCore.HUD.Config.Colors.main)
+        draw.RoundedBox(4, v.x + v.w - FCore.Killfeed.Config.Margin - 38, v.y + 5, 40, 40, FCore.Colors.main)
         v.victimAvatar:SetPos(v.x + v.w - FCore.Killfeed.Config.Margin - 36, v.y + 8)
         v.victimAvatar:PaintManual()
 
@@ -91,9 +91,9 @@ hook.Add("DrawDeathNotice", "FCore::HUD::KillFeed", function()
         surface.DrawText(v.victim:Name())
 
         if v.attacker != "" then
-            draw.DrawText(utf8.char(0xf05b), "FCore_FontAwesome_24_300", v.x + v.w / 2 - 10, v.y + 13, FCore.HUD.Config.Colors.text, TEXT_ALIGN_LEFT)
+            draw.DrawText(utf8.char(0xf05b), "FCore_FontAwesome_24_300", v.x + v.w / 2 - 10, v.y + 13, FCore.Colors.text, TEXT_ALIGN_LEFT)
         else
-            draw.DrawText(utf8.char(0xf21e), "FCore_FontAwesome_24_300", v.x + FCore.Killfeed.Config.Margin + 6, v.y + 14, FCore.HUD.Config.Colors.text, TEXT_ALIGN_LEFT)
+            draw.DrawText(utf8.char(0xf21e), "FCore_FontAwesome_24_300", v.x + FCore.Killfeed.Config.Margin + 6, v.y + 14, FCore.Colors.text, TEXT_ALIGN_LEFT)
         end
     end
 

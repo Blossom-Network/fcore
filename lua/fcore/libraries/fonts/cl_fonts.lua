@@ -3,7 +3,8 @@ FCore.Fonts = {}
 FCore.Fonts.Create = {
     "FontAwesome",
     "Roboto",
-    "Open Sans"
+    "Open Sans",
+    "Bahnschrift"
 }
 
 FCore.Fonts.Sizes = {

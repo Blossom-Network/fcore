@@ -64,10 +64,10 @@ function FCore.HUD.DrawVC()
             FCore.HUD.VCQueue.Players[k].avatar:ParentToHUD()
         end
 
-        draw.RoundedBox(4, v.x - 8, v.y - 128, 200, 48, FCore.HUD.Config.Colors.secondary)
+        draw.RoundedBox(4, v.x - 8, v.y - 128, 200, 48, FCore.Colors.secondary)
         draw.RoundedBox(4, v.x - 8, v.y - 82, 200, 3, Color(col.r,col.g,col.b,Lerp((SysTime() - v.lastVoice) * 4, 255, 0)))
 
-        draw.RoundedBox(4, v.x - 4, v.y - 124, 40, 40, FCore.HUD.Config.Colors.main)
+        draw.RoundedBox(4, v.x - 4, v.y - 124, 40, 40, FCore.Colors.main)
         FCore.HUD.VCQueue.Players[k].avatar:PaintManual()
         FCore.HUD.VCQueue.Players[k].avatar:SetPos(v.x - 2, v.y - 121)
 

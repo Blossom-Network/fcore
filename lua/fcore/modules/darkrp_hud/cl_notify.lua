@@ -23,15 +23,15 @@ local LoadingIcon = Material( "notifications/loading.png" )
 local Notifications = {}
 
 local function DrawNotification( x, y, w, h, text, icon, col )
-	draw.RoundedBox( 4, x, y, w, h, FCore.HUD.Config.Colors.secondary )
+	draw.RoundedBox( 4, x, y, w, h, FCore.Colors.secondary )
 
-	draw.SimpleText( utf8.char(0xf129), "FCore_FontAwesome_18_300", x + 10, y + h / 2 + 1, FCore.HUD.Config.Colors.text,
+	draw.SimpleText( utf8.char(0xf129), "FCore_FontAwesome_18_300", x + 10, y + h / 2 + 1, FCore.Colors.text,
 		TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER )
 
-	draw.SimpleText( text, "FCore_Open Sans_14_300", x + w - 8, y + h / 2, FCore.HUD.Config.Colors.text,
+	draw.SimpleText( text, "FCore_Open Sans_14_300", x + w - 8, y + h / 2, FCore.Colors.text,
 		TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER )
 
-	surface.SetDrawColor( FCore.HUD.Config.Colors.secondary )
+	surface.SetDrawColor( FCore.Colors.secondary )
 end
 
 function notification.AddLegacy( text, type, time )

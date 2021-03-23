@@ -46,7 +46,7 @@ function FCore.HUD.DrawBox(x, y, w, h, color, rtl, rtr, rbl, rbr)
     if rbl == nil then rbl = true end
     if rbr == nil then rbr = true end
 
-    draw.RoundedBoxEx(6, x, y, w, h, color or FCore.HUD.Config.Colors.transparent, rtl, rtr, rbl, rbr)
+    draw.RoundedBoxEx(6, x, y, w, h, color or FCore.Colors.transparent, rtl, rtr, rbl, rbr)
 end
 
 function FCore.HUD.DrawBarHorizontal(x, y, w, h, color, text, font, textColor)
@@ -72,7 +72,7 @@ function FCore.HUD.DrawBarHorizontal(x, y, w, h, color, text, font, textColor)
     FCore.HUD.DrawBox(bar1.x, bar1.y, bar1.w, bar1.h, bar1.color, true, false, true, false)
     FCore.HUD.DrawBox(bar2.x, bar2.y, bar2.w, bar2.h, bar2.color, false, true, false, true)
 
-    draw.DrawText(text, font, bar1.x - tw / 2, bar2.h / 2 - th, FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+    draw.DrawText(text, font, bar1.x - tw / 2, bar2.h / 2 - th, FCore.Colors.text, TEXT_ALIGN_CENTER)
 end
 
 function FCore.HUD.DrawBarVertical(x, y, w, h, color, text, font, textColor)
@@ -98,7 +98,7 @@ function FCore.HUD.DrawBarVertical(x, y, w, h, color, text, font, textColor)
     FCore.HUD.DrawBox(bar1.x, bar1.y, bar1.w, bar1.h, color, true, false, true, false)
     FCore.HUD.DrawBox(bar2.x, bar2.y, bar2.w, bar2.h, color, false, true, false, true)
 
-    draw.DrawText(text, font, bar1.x - tw / 2, bar2.h / 2 - th, textColor or FCore.HUD.Config.Colors.text, TEXT_ALIGN_CENTER)
+    draw.DrawText(text, font, bar1.x - tw / 2, bar2.h / 2 - th, textColor or FCore.Colors.text, TEXT_ALIGN_CENTER)
 end
 
 function FCore.HUD.DrawIconBox(x, y, icon, size, bgColor, color, offsetX, offsetY, iconSize)
@@ -106,14 +106,14 @@ function FCore.HUD.DrawIconBox(x, y, icon, size, bgColor, color, offsetX, offset
     if !iconSize then iconSize = size end
 
     FCore.HUD.DrawBox(x, y, size + 8, size + 8, bgColor)
-    draw.DrawText(FCore.HUD.Config.Icons[icon].text, string.format("FCore_FontAwesome_%s_300", iconSize), x + 4 + offsetX + FCore.HUD.Config.Icons[icon].margin.x, y + 4 + FCore.HUD.Config.Icons[icon].margin.y + offsetY, color or FCore.HUD.Config.Colors.text, align or TEXT_ALIGN_LEFT)
+    draw.DrawText(FCore.HUD.Config.Icons[icon].text, string.format("FCore_FontAwesome_%s_300", iconSize), x + 4 + offsetX + FCore.HUD.Config.Icons[icon].margin.x, y + 4 + FCore.HUD.Config.Icons[icon].margin.y + offsetY, color or FCore.Colors.text, align or TEXT_ALIGN_LEFT)
 end
 
 function FCore.HUD.DrawIcon(x, y, icon, size, color, align, iconSize)
     if !FCore.HUD.Config.Icons[icon] then return end
     if !iconSize then iconSize = size end
 
-    draw.DrawText(FCore.HUD.Config.Icons[icon].text, string.format("FCore_FontAwesome_%s_300", iconSize), x + 4 + FCore.HUD.Config.Icons[icon].margin.x, y + 4 + FCore.HUD.Config.Icons[icon].margin.y, color or FCore.HUD.Config.Colors.text, align or TEXT_ALIGN_LEFT)
+    draw.DrawText(FCore.HUD.Config.Icons[icon].text, string.format("FCore_FontAwesome_%s_300", iconSize), x + 4 + FCore.HUD.Config.Icons[icon].margin.x, y + 4 + FCore.HUD.Config.Icons[icon].margin.y, color or FCore.Colors.text, align or TEXT_ALIGN_LEFT)
 end
 
 function FCore.HUD.DrawNotify(x, y, icon, iconSize, text, font, color, align)
@@ -130,7 +130,7 @@ function FCore.HUD.DrawNotify(x, y, icon, iconSize, text, font, color, align)
 
     FCore.HUD.DrawBox(x, y - bh, bw, bh)
     FCore.HUD.DrawIcon(x + 8, y + 8, icon, iconSize, bgColor)
-    draw.DrawText(text, font, x + 48, y - bw + bh / 2 - th / 2, color or FCore.HUD.Config.Colors.text, align or TEXT_ALIGN_LEFT)
+    draw.DrawText(text, font, x + 48, y - bw + bh / 2 - th / 2, color or FCore.Colors.text, align or TEXT_ALIGN_LEFT)
 end
 
 function FCore.HUD.DrawInfo(x, y, icon, w, h, bgColor, color, align)
@@ -144,5 +144,5 @@ function FCore.HUD.DrawInfo(x, y, icon, w, h, bgColor, color, align)
 
     FCore.HUD.DrawBox(x, y, w, h)
     FCore.HUD.DrawIcon(x + 8, y + 8, icon, iconSize, bgColor)
-    draw.DrawText(text, font, x + 48, y + bh / 2 - th / 2, color or FCore.HUD.Config.Colors.text, align or TEXT_ALIGN_LEFT)
+    draw.DrawText(text, font, x + 48, y + bh / 2 - th / 2, color or FCore.Colors.text, align or TEXT_ALIGN_LEFT)
 end

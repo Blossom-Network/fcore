@@ -62,13 +62,3 @@ FCore.HUD.Config.Icons = {
         }
     }
 }
-
-FCore.HUD.Config.Colors = {
-    main = Color(64,64,64,255),
-    secondary = Color(48,48,48,255),
-    text = Color(192,192,192,255),
-    health = Color(255,64,64,255),
-    armor = Color(84,84,84,255),
-    white = Color(255,255,255,255),
-    transparent = Color(255,255,255,0)
-}

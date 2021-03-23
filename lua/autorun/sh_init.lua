@@ -1,7 +1,15 @@
 FCore = {}
 FCore.Colors = {
     success = Color(0,255,0),
-    error = Color(255,0,0)
+    error = Color(255,0,0),
+    red = Color(255,64,64),
+    main = Color(64,64,64,255),
+    secondary = Color(48,48,48,255),
+    text = Color(192,192,192,255),
+    health = Color(255,64,64,255),
+    armor = Color(84,84,84,255),
+    white = Color(255,255,255,255),
+    transparent = Color(255,255,255,0)
 }
 
 function FCore.Print(txt, color)
@@ -25,7 +33,7 @@ function FCore.searchFiles(dir)
 end
 
 function FCore.includeFile(fileLoc, fileType)
-    if (fileType == "cl") then
+    if (fileType == "cl" or string.match(fileLoc, "vgui")) then
         if SERVER then
             AddCSLuaFile(fileLoc)
         else
