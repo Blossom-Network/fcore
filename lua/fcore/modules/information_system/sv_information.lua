@@ -4,7 +4,7 @@ util.AddNetworkString("FCore::InformationSystem::Send")
 util.AddNetworkString("FCore::InformationSystem::Receive")
 
 net.Receive("FCore::InformationSystem::Send", function(len, ply)
-    if !IsValid(ply) then
+    if IsValid(ply) and ply:GetNWInt( "FIS_Cooldown", 0 ) < os.time() then
         local information = {}
 
         local informationType = net.ReadInt(3) // zmienić potem bit, nie pamiętam z pamięci do ilu to jest
@@ -35,6 +35,8 @@ net.Receive("FCore::InformationSystem::Send", function(len, ply)
         else
             net.Broadcast()
         end
+
+        ply:SetNWInt( "FIS_Cooldown", os.time() + 5 )
     end
 end)
 
