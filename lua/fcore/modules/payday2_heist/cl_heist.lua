@@ -45,31 +45,37 @@ function FCore.Heist.Create()
 end
 
 function FCore.Heist.RunRaid()
-    sound.PlayURL("http://fizi.pw/files/payday2_raid.mp3", "noblock", function(snd)
-        if IsValid(snd) then
-            snd:Play()
-            snd:SetVolume(0.1)
-            FCore.Heist.Audio = snd
+    if !FCore.Heist.Display then
+        if !FCore.Heist.Audio or !IsValid(FCore.Heist.Audio) or FCore.Heist.Audio:GetState() != 1 then
+            sound.PlayURL("http://fizi.pw/files/payday2_raid.mp3", "noblock", function(snd)
+                if IsValid(snd) then
+                    snd:Play()
+                    snd:SetVolume(0.1)
+                    FCore.Heist.Audio = snd
+                end
+            end)
         end
-    end)
 
-    FCore.Heist.Derma:SetSize(0, 50)
-    FCore.Heist.Derma:SetVisible(true)
+        FCore.Heist.Derma:SetSize(0, 50)
+        FCore.Heist.Derma:SetVisible(true)
 
-    FCore.Heist.Derma:SizeTo(300, 50, 1, 3, -1, function()
-        FCore.Heist.Display = true
-    end)
+        FCore.Heist.Derma:SizeTo(300, 50, 1, 3, -1, function()
+            FCore.Heist.Display = true
+        end)
+    end
 end
 
 function FCore.Heist.StopRaid()
-    if FCore.Heist.Audio and IsValid(FCore.Heist.Audio) then
-        FCore.Heist.Audio:Stop()
-    end
+    if FCore.Heist.Display then
+        if FCore.Heist.Audio and IsValid(FCore.Heist.Audio) then
+            FCore.Heist.Audio:Stop()
+        end
 
-    FCore.Heist.Derma:SizeTo(0, 50, 1, 0, -1, function()
-        FCore.Heist.Derma:SetVisible(false)
-        FCore.Heist.Display = false
-    end)
+        FCore.Heist.Derma:SizeTo(0, 50, 1, 0, -1, function()
+            FCore.Heist.Derma:SetVisible(false)
+            FCore.Heist.Display = false
+        end)
+    end
 end
 
 FCore.Heist.Create()
