@@ -18,13 +18,17 @@ function PANEL:Init()
     end
 
     function self.TopBar.CloseButton:Paint()
-        draw.RoundedBox(32, 0, 4, 16, 16, FCore.Colors.red)
+        draw.RoundedBox(4, 0, 4, 16, 16, FCore.Colors.red)
     end
 
     function self.TopBar:Paint(w, h)
         draw.RoundedBoxEx(4, 0, 0, w, h, FCore.Colors.secondary, true, true, false, false)
         draw.DrawText(self:GetParent():GetTitle(), "FCore_Open Sans_14_300", 8, 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT)
     end
+end
+
+function PANEL:ShowCloseButton(bShow)
+    self.TopBar.CloseButton:SetVisible(bShow)
 end
 
 function PANEL:Paint(w, h)
@@ -38,5 +42,6 @@ concommand.Add("test_fframe", function()
     panel:SetSize(ScrW() / 2, ScrH() / 2)
     panel:Center()
     panel:SetTitle("stachu")
+    panel:ShowCloseButton(true)
     panel:MakePopup()
 end)

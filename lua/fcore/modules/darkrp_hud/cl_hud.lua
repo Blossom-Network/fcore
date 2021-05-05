@@ -1,5 +1,60 @@
 FCore.HUD = FCore.HUD or {}
 
+// https://github.com/astepantsov/gmod-advanced-door-system/blob/master/lua/advdoors/hud/cl_hud.lua
+local function CalcDoorDrawPosition(door)
+	local center = door:OBBCenter()
+	local dimensions = door:OBBMins() - door:OBBMaxs()
+	dimensions.x = math.abs(dimensions.x)
+	dimensions.y = math.abs(dimensions.y)
+	dimensions.z = math.abs(dimensions.z)
+
+	local world_center = door:LocalToWorld(center)
+
+	local trace = {
+		endpos = world_center, 
+		filter = ents.FindInSphere(world_center, 50),
+		ignoreworld = true
+	}
+
+	table.RemoveByValue(trace.filter, door)
+
+	local TraceStart, TraceStartRev, Width
+	local x, y
+	if dimensions.z < dimensions.x and dimensions.z < dimensions.y then
+		x = "y"
+		y = "x"
+		TraceStart = trace.endpos + door:GetUp() * dimensions.z
+		TraceStartRev = trace.endpos - door:GetUp() * dimensions.z
+		Width = dimensions.y
+	elseif dimensions.x < dimensions.y then
+		x = "y"
+		y = "z"
+		Width = dimensions.y
+		TraceStart = trace.endpos + door:GetForward() * dimensions.x
+		TraceStartRev = trace.endpos - door:GetForward() * dimensions.x
+	elseif dimensions.y < dimensions.x then
+		x = "x"
+		y = "z"
+		Width = dimensions.x
+		TraceStart = trace.endpos + door:GetRight() * dimensions.y
+		TraceStartRev = trace.endpos - door:GetRight() * dimensions.y
+	end
+
+	trace.start = TraceStart;
+	local tr = util.TraceLine(trace);
+	trace.start = TraceStartRev
+	local tr_rev = util.TraceLine(trace);
+
+	local ang, ang_rev = tr.HitNormal:Angle(), tr_rev.HitNormal:Angle();
+	ang:RotateAroundAxis(ang:Forward(), 90);
+	ang:RotateAroundAxis(ang:Right(), 270);
+	ang_rev:RotateAroundAxis(ang_rev:Forward(), 90);
+	ang_rev:RotateAroundAxis(ang_rev:Right(), 270);
+	local pos, pos_rev = tr.HitPos, tr_rev.HitPos
+
+	return pos, ang, pos_rev, ang_rev, Width, x, y
+end
+
 function FCore.HUD.Player()
     local x = FCore.HUD.GetPos().x
     local y = FCore.HUD.GetPos().y
@@ -107,7 +162,23 @@ function FCore.HUD.drawPlayerInfo(ply)
 end
 
 function FCore.HUD.drawOwnableInfo(ent)
+    local pos = ent:GetPos() + ent:OBBCenter()
+    local ang = Vector(0, 90, 90)
 
+    if ent:GetClass() == "prop_door_rotating" then
+        pos, ang = CalcDoorDrawPosition(ent)
+    elseif ent:GetClass() == "prop_vehicle_jeep" then
+
+    end
+
+    surface.SetFont("FCore_Open Sans_24_300")
+
+    cam.Start3D2D(pos, ang, 0.1)
+
+        draw.RoundedBox(4, 125, -80, 250, 50, FCore.Colors.secondary)
+        FCore.HUD.DrawIconBox(-112, -70, "user", 24, FCore.Colors.main, FCore.Colors.text, 6, 3, 18)
+        draw.DrawText(FCore.HUD.Text(ent:GetClass(), 18), "FCore_Open Sans_24_300", 10, -66, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    cam.End3D2D()
 end
 
 function FCore.HUD.DrawEntity()
@@ -138,7 +209,7 @@ function FCore.HUD.DrawEntity()
 
     local ent = LocalPlayer():GetEyeTrace().Entity
 
-    if IsValid(ent) and ent:isKeysOwnable() and ent:GetPos():DistToSqr(LocalPlayer():GetPos()) < 40000 then
+    if IsValid(ent) and ent:isKeysOwnable() and ent:GetPos():DistToSqr(LocalPlayer():GetPos()) < 100000 then
         FCore.HUD.drawOwnableInfo(ent)
     end
 end

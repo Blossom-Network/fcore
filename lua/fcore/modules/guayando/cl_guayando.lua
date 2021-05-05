@@ -7,12 +7,13 @@ function FCore.Guayando.Stage1()
             local fft = {}
             FCore.Guayando.Music:FFT(fft, FFT_16384)
 
-            local barWidth = ScrW() / 192
+            local barWidth = (ScrW() / 128)
 
-            for i=1,192 do
-                local color = HSVToColor((360 / 192) * i, 1, 1)
+            for i=1,128 do
+                local color = HSVToColor((360 / 128) * i, 1, 1)
 
                 surface.SetDrawColor(color)
+
                 surface.DrawRect(ScrW() - barWidth * (i - 1), ScrH() + 2 - ScrH() * fft[i], barWidth, ScrH() * fft[i])
                 surface.DrawRect(barWidth * (i - 1), 0, barWidth, ScrH() * fft[i])
             end
