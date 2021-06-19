@@ -60,5 +60,12 @@ FCore.HUD.Config.Icons = {
             x = 0,
             y = 0
         }
+    },
+    paper = {
+        text = utf8.char(0xf1ea),
+        margin = {
+            x = 0,
+            y = 0
+        }
     }
 }

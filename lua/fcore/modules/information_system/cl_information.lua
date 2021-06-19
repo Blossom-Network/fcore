@@ -8,7 +8,7 @@ net.Receive("FCore::InformationSystem::Receive", function()
     table.insert(FCore.InformationSystem.Requests, tbl)
 end)
 
-hook.Add("PostDrawOpaqueRenderables", "FCore::HUD::Entity", function()
+hook.Add("PostDrawOpaqueRenderables", "FCore::InformationSystem::Points", function()
     if !FCore.InformationSystem.Requests then FCore.InformationSystem.Requests = {} end
     
     for k,v in ipairs(FCore.InformationSystem.Requests) do
@@ -16,8 +16,8 @@ hook.Add("PostDrawOpaqueRenderables", "FCore::HUD::Entity", function()
 
         cam.Start3D2D(v.pos, Angle(0, LocalPlayer():EyeAngles().y - 90, 90), 0.1)
             cam.IgnoreZ(true)
-            
             draw.RoundedBox(0, 0, 0, 64, 64, Color(255,255,255))
+            cam.IgnoreZ(false)
         cam.End3D2D()
     end
 end)

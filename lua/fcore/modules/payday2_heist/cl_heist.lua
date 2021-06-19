@@ -10,7 +10,7 @@ function FCore.Heist.Create()
 
     FCore.Heist.Derma = vgui.Create("DPanel")
     FCore.Heist.Derma:SetSize(300, 50)
-    FCore.Heist.Derma:SetPos(ScrW() / 2 - 150, 8)
+    FCore.Heist.Derma:SetPos(ScrW() - 308, 8)
     FCore.Heist.Derma:SetVisible(false)
 
     FCore.Heist.Derma.Paint = function(self, w, h)

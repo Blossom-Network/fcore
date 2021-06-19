@@ -20,7 +20,7 @@ local symbols = {
 }
 
 local language = "PL"
-local serverName = "blossom-network.xyz"
+local serverName = "ChillRP"
 local gamemode = gmod.GetGamemode().Name
 
 local function changeHostname()

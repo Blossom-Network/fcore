@@ -11,21 +11,25 @@ function PANEL:Init()
         local bgColor = self.bgColor;
 
         if self:IsHovered() then
-            bgColor = Color(bgColor.r + 32, bgColor.g + 32, bgColor.b + 32)
+            draw.RoundedBoxEx(0, 0, 0, w, h, Color(255, 255, 255, 15))
         end
 
-        draw.RoundedBox(4, 0, 0, w, h, bgColor)
-        draw.DrawText(self:GetText(), "FCore_Open Sans_14_300", w - w / 2, h / 2 - 7, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER)
+        if self.icon then
+            draw.DrawText(utf8.char(self.icon), "FCore_FontAwesome_14_300", 8, h / 2 - 6, Color( 255, 255, 255, 255), TEXT_ALIGN_LEFT)
+        end
+
+        draw.DrawText(self:GetText(), "FCore_Roboto_14_300", w - 8, h / 2 - 6, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT)
     end
 end
 
+function PANEL:SetIcon(unicode)
+    if unicode then
+        self.icon = unicode
+    end
+end
 
 function PANEL:SetColor(color)
     self.bgColor = color;
-end
-
-function PANEL:Paint(w, h)
-    draw.RoundedBox( 4, 0, 0, w, h, FCore.Colors.main )
 end
 
 vgui.Register( "FCore.Button", PANEL, "DButton" )

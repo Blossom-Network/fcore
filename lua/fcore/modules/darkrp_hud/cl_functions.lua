@@ -14,7 +14,7 @@ function FCore.HUD.Text(txt, length)
 end
 
 function FCore.HUD.AttachCurrency(value)
-    return value .. " PLN"
+    return "$" .. value
 end
 
 function FCore.HUD.FormatMoney(value)
@@ -40,13 +40,15 @@ function FCore.HUD.FormatMoney(value)
     return negative and "-" or "" and FCore.HUD.AttachCurrency(value)
 end
 
-function FCore.HUD.DrawBox(x, y, w, h, color, rtl, rtr, rbl, rbr)
+function FCore.HUD.DrawBox(x, y, w, h, color, rtl, rtr, rbl, rbr, r)
+    if r == nil then r = 6 end
+
     if rtl == nil then rtl = true end
     if rtr == nil then rtr = true end
     if rbl == nil then rbl = true end
     if rbr == nil then rbr = true end
 
-    draw.RoundedBoxEx(6, x, y, w, h, color or FCore.Colors.transparent, rtl, rtr, rbl, rbr)
+    draw.RoundedBoxEx(r, x, y, w, h, color or FCore.Colors.transparent, rtl, rtr, rbl, rbr)
 end
 
 function FCore.HUD.DrawBarHorizontal(x, y, w, h, color, text, font, textColor)
@@ -145,4 +147,95 @@ function FCore.HUD.DrawInfo(x, y, icon, w, h, bgColor, color, align)
     FCore.HUD.DrawBox(x, y, w, h)
     FCore.HUD.DrawIcon(x + 8, y + 8, icon, iconSize, bgColor)
     draw.DrawText(text, font, x + 48, y + bh / 2 - th / 2, color or FCore.Colors.text, align or TEXT_ALIGN_LEFT)
+end
+
+function FCore.HUD.getDoorPos(ent)
+    local doorAngles = ent:GetAngles()
+
+    --Get some vars.
+    local OBBMaxs = ent:OBBMaxs()
+    local OBBMins = ent:OBBMins()
+    local OBBCenter = ent:OBBCenter()
+
+    --Get the size of the door.
+    local size = OBBMins - OBBMaxs
+    size = Vector(math.abs(size.x),math.abs(size.y),math.abs(size.z))
+
+    --Get OBBCenter local to world.
+    local obbCenterToWorld = ent:LocalToWorld(OBBCenter)
+
+    --Set the settings for the trace.
+    local traceTbl = {
+        endpos = obbCenterToWorld,
+        filter = function( ent )
+            return !(ent:IsPlayer() or ent:IsWorld())
+        end
+    }
+
+    --Create a variable that holds the door angles. (Bigger scope)
+    local offset
+    local DrawAngles
+    local CanvasPos1
+    local CanvasPos2
+
+        --Check what rotation the door has.
+        if size.x > size.y then
+
+            --Set the drawangles of the door.
+            DrawAngles = Angle(0,0,90)
+
+            --Set the start position of the trace.
+            traceTbl.start = obbCenterToWorld + ent:GetRight() * (size.y / 2)
+
+            --Calculate the thickness of the door.
+            local thickness = util.TraceLine(traceTbl).Fraction * (size.y / 2) + 0.85
+
+            --Set the offset.
+            offset = Vector(size.x / 2,thickness,0)
+
+        else
+
+            --Set the drawangles of the door.
+            DrawAngles = Angle(0,90,90)
+
+            --Set the start position of the trace.
+            traceTbl.start = obbCenterToWorld + ent:GetForward() * (size.x / 2)
+
+            --Calculate the thickness of the door.
+            local thickness = (1 - util.TraceLine(traceTbl).Fraction) * (size.x / 2) + 0.85
+
+            --Set the offset.
+            offset = Vector(-thickness,size.y / 2,0)
+
+        end
+
+        --Decide the heightOffset.
+        local heightOffset = Vector(0,0,7.5)
+
+        --Calculate the positions for the 3D2D.
+        CanvasPos1 = OBBCenter - offset + heightOffset
+        CanvasPos2 = OBBCenter + offset + heightOffset
+
+        --Create a var for the 3D2D-Scale.
+        local scale = 0.1
+
+        local canvasWidth
+
+        if size.x > size.y then
+            canvasWidth = size.x / scale
+        else
+            canvasWidth = size.y / scale
+        end
+
+        --Create the displaydata.
+        displayData = {
+            DrawAngles = DrawAngles,
+            CanvasPos1 = CanvasPos1,
+            CanvasPos2 = CanvasPos2,
+            scale = scale,
+            canvasWidth = canvasWidth,
+            start = traceTbl.start
+        }
+
+        return CanvasPos1, CanvasPos2, DrawAngles
 end

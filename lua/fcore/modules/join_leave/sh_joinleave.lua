@@ -3,24 +3,24 @@ FCore.JoinLeave = {}
 if SERVER then
     util.AddNetworkString("FCore::JoinLeave")
 
-    if !file.Exists("blossom/", "DATA") then
-        file.CreateDir("blossom/")
+    if !file.Exists("fcore/", "DATA") then
+        file.CreateDir("fcore/")
     else
-        if !file.Exists("blossom/join_leave/", "DATA") then
-            file.CreateDir("blossom/join_leave/")
+        if !file.Exists("fcore/join_leave/", "DATA") then
+            file.CreateDir("fcore/join_leave/")
         end
     end
 
     function FCore.JoinLeave.GetTime(sid)
-        if !file.Exists("blossom/join_leave/" .. sid .. ".txt", "DATA") then
+        if !file.Exists("fcore/join_leave/" .. sid .. ".txt", "DATA") then
             return 0
         else
-            return file.Read("blossom/join_leave/" .. sid .. ".txt", "DATA")
+            return file.Read("fcore/join_leave/" .. sid .. ".txt", "DATA")
         end
     end
 
     function FCore.JoinLeave.SetTime(sid)
-        file.Write("blossom/join_leave/" .. sid .. ".txt", os.time())
+        file.Write("fcore/join_leave/" .. sid .. ".txt", os.time())
     end
 
     function FCore.JoinLeave.Parse(data, eventType)

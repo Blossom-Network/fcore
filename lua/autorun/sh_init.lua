@@ -1,16 +1,4 @@
 FCore = {}
-FCore.Colors = {
-    success = Color(0,255,0),
-    error = Color(255,0,0),
-    red = Color(255,64,64),
-    main = Color(64,64,64,255),
-    secondary = Color(48,48,48,255),
-    text = Color(192,192,192,255),
-    health = Color(255,64,64,255),
-    armor = Color(84,84,84,255),
-    white = Color(255,255,255,255),
-    transparent = Color(255,255,255,0)
-}
 
 function FCore.Print(txt, color)
     MsgC(Color(255,255,255), "[FCore] ", color, txt, "\n")
@@ -21,13 +9,13 @@ function FCore.searchFiles(dir)
 
     for k,v in ipairs(files) do
         if string.match(v, ".lua") then
-            FCore.Print("Including " .. dir .. "/" .. v .. " (" .. CurTime() - FCore.Started .. "s)", FCore.Colors.success)
+            FCore.Print("Including " .. dir .. "/" .. v .. " (" .. CurTime() - FCore.Started .. "s)", Color(255,0,0))
             FCore.includeFile(dir .. "/" .. v, string.Left(v, 2))
         end
     end
 
     for k,v in ipairs(directories) do
-        FCore.Print("Searching " .. dir .. "/" .. v .. " (" .. CurTime() - FCore.Started .. "s)", FCore.Colors.success)
+        FCore.Print("Searching " .. dir .. "/" .. v .. " (" .. CurTime() - FCore.Started .. "s)", Color(255,0,0))
         FCore.searchFiles(dir .. "/" .. v)
     end
 end
@@ -56,7 +44,7 @@ end
 function FCore.Run()
     FCore.Started = CurTime()
 
-    FCore.Print("Initializing FCore...\n", FCore.Colors.success)
+    FCore.Print("Initializing FCore...\n", Color(255,0,0))
     FCore.searchFiles("fcore")
 end
 

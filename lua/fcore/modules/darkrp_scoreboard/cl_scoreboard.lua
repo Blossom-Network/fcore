@@ -12,20 +12,22 @@ function FCore.Scoreboard.Draw()
     FCore.Scoreboard.Instance:SetTitle("")
     FCore.Scoreboard.Instance:ShowCloseButton()
     FCore.Scoreboard.Instance:DockMargin(0,0,0,0)
-    FCore.Scoreboard.Instance:DockPadding(0,0,0,0)
     FCore.Scoreboard.Instance:SetVisible(false)
 
     function FCore.Scoreboard.Instance:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, FCore.Colors.secondary)
+        draw.RoundedBox(4, 0, 0, w, h, FCore.Colors.secondary)
+        draw.RoundedBox(4, 8, 8, w - 16, h - 16, FCore.Colors.main)
     end
 
     FCore.Scoreboard.Instance.Header = vgui.Create("DPanel", FCore.Scoreboard.Instance)
     FCore.Scoreboard.Instance.Header:SetTall(64)
     FCore.Scoreboard.Instance.Header:Dock(TOP)
     function FCore.Scoreboard.Instance.Header:Paint(w, h)
-        draw.RoundedBox(0, 0, 0, w, h, FCore.Colors.main)
-        draw.DrawText("Blossom Network", "FCore_Open Sans_36_700", w - w / 2, 14, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.RoundedBox(4, w / 2 - (w / 4) / 2, 8, w / 4, h - 16, FCore.Colors.secondary)
+        draw.DrawText("ChillRP", "FCore_Open Sans_36_700", w - w / 2, 14, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
+
+    FCore.Scoreboard.Instance:DockPadding(8,0,8,8)
 
     local header = vgui.Create("DPanel", FCore.Scoreboard.Instance)
     local hw = ScrW() / 2
@@ -33,7 +35,7 @@ function FCore.Scoreboard.Draw()
     header:SetSize(hw, 48)
     header:Dock(TOP)
     function header:Paint(w, h)
-        draw.RoundedBoxEx(4, 0, 0, w, h, Color(255, 255, 255, 2.5), true, true, false, false)
+        draw.RoundedBoxEx(4, 0, 0, w, h, Color(0, 0, 0, 50), true, true, false, false)
     end
 
     header.Name = vgui.Create("DPanel", header)
@@ -41,7 +43,7 @@ function FCore.Scoreboard.Draw()
     header.Name:Dock(LEFT)
 
     function header.Name:Paint(w, h)
-        draw.DrawText("Nick", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Nick", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Job = vgui.Create("DPanel", header)
@@ -49,7 +51,7 @@ function FCore.Scoreboard.Draw()
     header.Job:Dock(LEFT)
 
     function header.Job:Paint(w, h)
-        draw.DrawText("Praca", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Praca", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     hw = hw - ((hw / 4) * 2)
@@ -59,7 +61,7 @@ function FCore.Scoreboard.Draw()
     header.Kills:Dock(LEFT)
 
     function header.Kills:Paint(w, h)
-        draw.DrawText("Fragi", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Fragi", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Deaths = vgui.Create("DPanel", header)
@@ -67,7 +69,7 @@ function FCore.Scoreboard.Draw()
     header.Deaths:Dock(LEFT)
     
     function header.Deaths:Paint(w, h)
-        draw.DrawText("Śmierci", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Śmierci", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.KDA = vgui.Create("DPanel", header)
@@ -75,15 +77,15 @@ function FCore.Scoreboard.Draw()
     header.KDA:Dock(LEFT)
     
     function header.KDA:Paint(w, h)
-        draw.DrawText("KD Ratio", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("KDR", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.Ping = vgui.Create("DPanel", header)
-    header.Ping:SetSize(hw / 4, 48)
+    header.Ping:SetSize(hw / 6, 48)
     header.Ping:Dock(LEFT)
     
     function header.Ping:Paint(w, h)
-        draw.DrawText("Ping", "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        draw.DrawText("Ping", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     FCore.Scoreboard.Instance.List = vgui.Create("DScrollPanel", FCore.Scoreboard.Instance)
@@ -131,8 +133,11 @@ function FCore.Scoreboard.GetPlayers()
         hw = ScrW() / 2
 
         function plyPanel:Paint(w, h)
-            if k % 2 == 1 then
-                surface.SetDrawColor(255, 255, 255, 5)
+            if k % 2 == 0 then
+                surface.SetDrawColor(0, 0, 0, 50)
+                surface.DrawRect(0, 0, w, h)
+            else
+                surface.SetDrawColor(0, 0, 0, 25)
                 surface.DrawRect(0, 0, w, h)
             end
         end
@@ -180,7 +185,7 @@ function FCore.Scoreboard.GetPlayers()
         end
     
         plyPanel.Ping = vgui.Create("DPanel", plyPanel)
-        plyPanel.Ping:SetSize(hw / 4, 48)
+        plyPanel.Ping:SetSize(hw / 6, 48)
         plyPanel.Ping:Dock(LEFT)
         
         function plyPanel.Ping:Paint(w, h)
