@@ -198,6 +198,14 @@ function FCore.Scoreboard.ClearPlayers()
     FCore.Scoreboard.Players = {}
 end
 
+function FCore.Scoreboard.Refresh()
+    timer.Simple(0.1, function()
+        FCore.Scoreboard.Players = {}
+
+        FCore.Scoreboard.GetPlayers()
+    end)
+end
+
 function GAMEMODE.ScoreboardShow()
     FCore.Scoreboard.GetPlayers()
 

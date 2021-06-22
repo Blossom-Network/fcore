@@ -61,6 +61,8 @@ else
         local lastJoined = net.ReadString()
         local event = net.ReadString()
 
+        FCore.Scoreboard.Refresh()
+
         if event == "join" then
             FCore.AddText(Color(255,255,255), "Gracz ", plyName, Color(0,255,0), " dołączył ", Color(255,255,255), "na serwer!\nOstatni raz dołączył " .. lastJoined .. ".")
         elseif event == "leave" then

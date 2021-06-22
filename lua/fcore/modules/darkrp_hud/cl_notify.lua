@@ -35,12 +35,22 @@ local function DrawNotification( x, y, w, h, text, icon, col )
 end
 
 function notification.AddLegacy( text, type, time )
+	if LocalPlayer():getDarkRPVar("Arrested") then
+		ScreenPos = ScrH() - 56
+	else
+		ScreenPos = ScrH() - (FCore.HUD.Config.Size.h + FCore.HUD.Config.Margin.y) - 84
+	end
+
 	surface.SetFont( "FCore_Open Sans_14_300" )
 
 	local w = surface.GetTextSize( text ) + 32
 	local h = 48
 	local x = -w + 8
 	local y = ScreenPos
+
+	if time > 15 or !time or time >= 0 then
+		time = 5
+	end
 
 	table.insert( Notifications, 1, {
 		x = x,
@@ -96,6 +106,12 @@ function notification.Kill( id )
 end
 
 hook.Add( "HUDPaint", "DrawNotifications", function()
+	if LocalPlayer():getDarkRPVar("Arrested") then
+		ScreenPos = ScrH() - 56
+	else
+		ScreenPos = ScrH() - (FCore.HUD.Config.Size.h + FCore.HUD.Config.Margin.y) - 84
+	end
+
 	for k, v in ipairs( Notifications ) do
 		DrawNotification( math.floor( v.x ), math.floor( v.y ), v.w, v.h, v.text, v.icon, v.col, v.progress )
 

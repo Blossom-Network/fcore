@@ -1,4 +1,13 @@
 FCore.HUD = FCore.HUD or {}
+FCore.HUD.ArrestedTime = {
+    Start = 0,
+    Until = 0
+}
+
+usermessage.Hook("GotArrested", function(msg)
+    FCore.HUD.ArrestedTime.Start = CurTime()
+    FCore.HUD.ArrestedTime.Until = msg:ReadFloat()
+end)
 
 function FCore.HUD.Player()
     local x = FCore.HUD.GetPos().x
@@ -6,6 +15,20 @@ function FCore.HUD.Player()
 
     local w = FCore.HUD.Config.Size.w
     local h = FCore.HUD.Config.Size.h
+
+    if LocalPlayer():getDarkRPVar("Arrested") then
+            FCore.HUD.DrawBox(ScrW() / 2 - 200, ScrH() - 64, 400, 54, FCore.Colors.secondary, true, true, true, true)
+
+            draw.DrawText(string.format("Jesteś aresztowany jeszcze przez %d sekund.", (FCore.HUD.ArrestedTime.Until + FCore.HUD.ArrestedTime.Start) - CurTime()), "FCore_Open Sans_18_500", ScrW() / 2, ScrH() - 60, FCore.Colors.white, TEXT_ALIGN_CENTER)
+        
+            surface.SetDrawColor(FCore.Colors.main)
+            surface.DrawOutlinedRect(ScrW() / 2 - 175, ScrH() - 36, 350, 18, 2)
+
+            local barwidth = 1 + ((FCore.HUD.ArrestedTime.Until + FCore.HUD.ArrestedTime.Start) - CurTime()) / -FCore.HUD.ArrestedTime.Until
+
+            surface.DrawRect(ScrW() / 2 - 175, ScrH() - 36, 350 * barwidth, 18, 2)
+            return
+    end
 
     local nickname = FCore.HUD.Text(LocalPlayer():Name(), 12)
     surface.SetFont("FCore_Open Sans_16_300")
