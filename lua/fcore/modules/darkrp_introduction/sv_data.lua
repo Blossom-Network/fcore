@@ -18,7 +18,7 @@ function FCore.Introduction.SavePoints(_, ply)
         file.Write("fcore/introduction/" .. map .. ".txt", util.TableToJSON(net.ReadTable()))
 
         net.Start("fcore_savepoints")
-        net.WriteString("Zapisano!")
+        net.WriteString("Zapisano do bazy danych!")
         net.Send(ply)
     end
 end
