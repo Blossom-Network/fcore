@@ -6,10 +6,10 @@ FCore.Introduction.CameraPos = {}
 
 FCore.Introduction.Debug = CreateClientConVar("fcore_intro_debug", "0", true)
 
-local motd = [[DEV-LOG #1
+local motd = [[Witaj na naszym serwerze!
 
-zacząłem robić blossoma
-ale jebie trochę kałem]]
+Życzymy tobie miłej gry!
+Dołącz na nasz serwer Discord!]]
 
 local function textWrap(txt, font, width)
     txt = DarkRP.textWrap(txt, font, width)
@@ -107,12 +107,37 @@ function FCore.Introduction.GetPoints()
     end
 end
 
+function FCore.Introduction.ClearPoints()
+    FCore.Introduction.Points = {}
+end
+
+function FCore.Introduction.LoadPoints()
+    print("sent")
+    net.Start("fcore_loadpoints")
+    net.SendToServer()
+end
+
+net.Receive("fcore_loadpoints", function(len)
+    FCore.Introduction.Points = net.ReadTable() or {}
+    FCore.Introduction.Run()
+end)
+
+net.Receive("fcore_savepoints", function(len)
+    notification.AddLegacy(net.ReadString(), 0, 10)
+end)
+
+function FCore.Introduction.SavePoints()
+    net.Start("fcore_savepoints")
+    net.WriteTable(FCore.Introduction.Points)
+    net.SendToServer()
+end
+
 function FCore.Introduction.CreateVGUI()
-    sound.PlayURL("https://fizi.pw/files/mafia_city_pac3/barka.ogg", "noplay noblock", function(snd)
+    sound.PlayURL("https://fizi.pw/opiumrp/assets/audio/Lost%20Sky%20-%20Fearless.ogg", "noplay noblock", function(snd)
         if snd and IsValid(snd) then
             FCore.Introduction.AudioInstance = snd
 
-            FCore.Introduction.AudioInstance:SetVolume(0.15)
+            FCore.Introduction.AudioInstance:SetVolume(0.25)
             FCore.Introduction.AudioInstance:Play()
         end
     end)
@@ -154,7 +179,7 @@ function FCore.Introduction.CreateVGUI()
     FCore.Introduction.Instance.Interface.ServerName = TDLib("DPanel", FCore.Introduction.Instance.Interface)
     FCore.Introduction.Instance.Interface.ServerName:Dock(TOP)
     FCore.Introduction.Instance.Interface.ServerName:SetTall(64)
-    FCore.Introduction.Instance.Interface.ServerName:ClearPaint():Background(Color(0,0,0,100)):Text("Blossom Network", "FCore_Roboto_36_700")
+    FCore.Introduction.Instance.Interface.ServerName:ClearPaint():Background(Color(0,0,0,100)):Text("ChillRP", "FCore_Roboto_36_700")
 
     local motdText, mw, mh = textWrap(motd, "FCore_Roboto_18_500", 268)
 
@@ -176,14 +201,15 @@ function FCore.Introduction.CreateVGUI()
 
     FCore.Introduction.Instance.Interface.Buttons.Close = TDLib("DButton", FCore.Introduction.Instance.Interface.Buttons)
     FCore.Introduction.Instance.Interface.Buttons.Close:SetSize(200, 32)
-    FCore.Introduction.Instance.Interface.Buttons.Close:ClearPaint():Background(Color(0, 0, 0, 100)):FadeHover(Color(0, 0, 0, 200)):Text("Zacznij RDMować!", "FCore_Roboto_18_500"):Dock(RIGHT)
+    FCore.Introduction.Instance.Interface.Buttons.Close:ClearPaint():Background(Color(0, 0, 0, 100)):FadeHover(Color(0, 0, 0, 200)):Text("Dołącz do gry!", "FCore_Roboto_18_500"):Dock(RIGHT)
     function FCore.Introduction.Instance.Interface.Buttons.Close:DoClick()
         FCore.Introduction.Stop()
     end
 end
 
+--[[
 function FCore.Introduction.DebugPoints()
-    if FCore.Introduction.Debug:GetInt() == 1 then
+    if FCore.Introduction.Debug:GetInt() == 1 and istable(FCore.Introduction.Points) then
         for k,v in ipairs(FCore.Introduction.Points) do   
             cam.Start3D2D(v.pos, Angle(0, LocalPlayer():EyeAngles().y - 90, 90), 1)
                 cam.IgnoreZ(false)
@@ -194,6 +220,8 @@ function FCore.Introduction.DebugPoints()
         end
     end
 end
+hook.Add("PostDrawOpaqueRenderables", "FCore::Introduction::Debug", FCore.Introduction.DebugPoints)
+]]
 
 function FCore.Introduction.Stop()
     FCore.Introduction.AudioInstance:Stop()
@@ -201,14 +229,18 @@ function FCore.Introduction.Stop()
 end
 
 function FCore.Introduction.Run()
-    if #FCore.Introduction.Points > 0 then
+    if istable(FCore.Introduction.Points) and #FCore.Introduction.Points > 0 then
         FCore.Introduction.CreateVGUI()
     end
 end
 
-hook.Add("PostDrawOpaqueRenderables", "FCore::Introduction::Debug", FCore.Introduction.DebugPoints)
-
 concommand.Add("fcore_addpoint", FCore.Introduction.AddPoint)
 concommand.Add("fcore_getpoints", FCore.Introduction.GetPoints)
+concommand.Add("fcore_clearpoints", FCore.Introduction.ClearPoints)
+concommand.Add("fcore_savepoints", FCore.Introduction.SavePoints)
+concommand.Add("fcore_loadpoints", FCore.Introduction.LoadPoints)
 concommand.Add("fcore_runintro", FCore.Introduction.Run)
 
+hook.Add("InitPostEntity", "FCore::Introduction::Init", function()
+    FCore.Introduction.LoadPoints()
+end)
