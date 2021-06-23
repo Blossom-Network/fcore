@@ -1,12 +1,12 @@
 # FCore
-Standalone AIO DarkRP server package created by [fizi](https://github.com/fizioterapia).
+Standalone AIO DarkRP server package created by [fizi](https://github.com/fizioterapia).  
 This package is going to updated often with some certain features.
 
 # Features
-**DarkRP UI Rework**
-**3D Introduction System**
-**Join/Leave System with Saving Time**
-**RickRoll?**
+**DarkRP UI Rework**  
+**3D Introduction System**  
+**Join/Leave System with Saving Time**  
+**RickRoll?**  
 
 # Credits
 This work couldn't be done without some things made by other users.
