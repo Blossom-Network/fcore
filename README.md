@@ -11,7 +11,6 @@ Features that are actually included in the package currently.
  - 3D Introduction System
  - DarkRP UI Rework
  - Join/Leave System with Recording Time
- - Gangs
  - RickRoll for ULX
 
 # TODO
@@ -22,6 +21,7 @@ Things that I'm going to develop for this package.
  - Information System
  - Duplex Discord Relay
  - NPC System
+ - Gangs
  - NPC Shop & Rop
  - Dumpsters
  - Language System
