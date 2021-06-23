@@ -1,5 +1,5 @@
 # FCore
-Standalone Open Source AIO DarkRP server package created by [fizi](https://github.com/fizioterapia).
+Standalone Open Source AIO DarkRP server package created by [fizi](https://github.com/fizioterapia).  
 This package is going to updated often with more features.
 
 # Features
