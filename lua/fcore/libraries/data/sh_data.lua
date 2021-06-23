@@ -4,6 +4,9 @@ FCore.DataFolders = {
     },
     {
         name = "introduction"
+    },
+    {
+        name = "gangs"
     }
 }
 

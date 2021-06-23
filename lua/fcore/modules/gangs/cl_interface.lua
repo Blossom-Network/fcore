@@ -1,0 +1,1 @@
+FCore.Gangs = FCore.Gangs or {}
