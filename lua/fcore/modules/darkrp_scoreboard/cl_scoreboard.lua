@@ -39,7 +39,7 @@ function FCore.Scoreboard.Draw()
     end
 
     header.Name = vgui.Create("DPanel", header)
-    header.Name:SetSize(hw / 4, 48)
+    header.Name:SetSize(hw / 5, 48)
     header.Name:Dock(LEFT)
 
     function header.Name:Paint(w, h)
@@ -47,45 +47,53 @@ function FCore.Scoreboard.Draw()
     end
 
     header.Job = vgui.Create("DPanel", header)
-    header.Job:SetSize(hw / 4, 48)
+    header.Job:SetSize(hw / 6, 48)
     header.Job:Dock(LEFT)
 
     function header.Job:Paint(w, h)
         draw.DrawText("Praca", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
-    hw = hw - ((hw / 4) * 2)
+    header.Rank = vgui.Create("DPanel", header)
+    header.Rank:SetSize(hw / 6, 48)
+    header.Rank:Dock(LEFT)
 
-    header.Kills = vgui.Create("DPanel", header)
-    header.Kills:SetSize(hw / 4, 48)
-    header.Kills:Dock(LEFT)
-
-    function header.Kills:Paint(w, h)
-        draw.DrawText("Fragi", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    function header.Rank:Paint(w, h)
+        draw.DrawText("Ranga", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
-    header.Deaths = vgui.Create("DPanel", header)
-    header.Deaths:SetSize(hw / 4, 48)
-    header.Deaths:Dock(LEFT)
+    hw = hw - ((hw / 6) * 2)
+
+    header.Ping = vgui.Create("DPanel", header)
+    header.Ping:SetSize(hw / 6, 48)
+    header.Ping:Dock(RIGHT)
     
-    function header.Deaths:Paint(w, h)
-        draw.DrawText("Śmierci", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    function header.Ping:Paint(w, h)
+        draw.DrawText("Ping", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     header.KDA = vgui.Create("DPanel", header)
-    header.KDA:SetSize(hw / 4, 48)
-    header.KDA:Dock(LEFT)
+    header.KDA:SetSize(hw / 6, 48)
+    header.KDA:Dock(RIGHT)
     
     function header.KDA:Paint(w, h)
         draw.DrawText("KDR", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
-    header.Ping = vgui.Create("DPanel", header)
-    header.Ping:SetSize(hw / 6, 48)
-    header.Ping:Dock(LEFT)
+    header.Deaths = vgui.Create("DPanel", header)
+    header.Deaths:SetSize(hw / 6, 48)
+    header.Deaths:Dock(RIGHT)
     
-    function header.Ping:Paint(w, h)
-        draw.DrawText("Ping", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    function header.Deaths:Paint(w, h)
+        draw.DrawText("Śmierci", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    end
+
+    header.Kills = vgui.Create("DPanel", header)
+    header.Kills:SetSize(hw / 6, 48)
+    header.Kills:Dock(RIGHT)
+
+    function header.Kills:Paint(w, h)
+        draw.DrawText("Fragi", "FCore_Open Sans_18_700", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
 
     FCore.Scoreboard.Instance.List = vgui.Create("DScrollPanel", FCore.Scoreboard.Instance)
@@ -116,6 +124,7 @@ function FCore.Scoreboard.GetPlayers()
             deaths = v:Deaths(),
             kda = math.Round(getKDA(v), 2),
             ping = v:Ping(),
+            usergroup = v:GetUserGroup(),
             instance = v
         })
     end
@@ -143,7 +152,7 @@ function FCore.Scoreboard.GetPlayers()
         end
 
         plyPanel.Name = vgui.Create("DPanel", plyPanel)
-        plyPanel.Name:SetSize(hw / 4, 48)
+        plyPanel.Name:SetSize(hw / 5, 48)
         plyPanel.Name:Dock(LEFT)
     
         function plyPanel.Name:Paint(w, h)
@@ -151,45 +160,53 @@ function FCore.Scoreboard.GetPlayers()
         end
     
         plyPanel.Job = vgui.Create("DPanel", plyPanel)
-        plyPanel.Job:SetSize(hw / 4, 48)
+        plyPanel.Job:SetSize(hw / 6, 48)
         plyPanel.Job:Dock(LEFT)
     
         function plyPanel.Job:Paint(w, h)
             draw.DrawText(ply.job, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
         end
 
-        hw = hw - ((hw / 4) * 2)
+        plyPanel.Rank = vgui.Create("DPanel", plyPanel)
+        plyPanel.Rank:SetSize(hw / 6, 48)
+        plyPanel.Rank:Dock(LEFT)
     
-        plyPanel.Kills = vgui.Create("DPanel", plyPanel)
-        plyPanel.Kills:SetSize(hw / 4, 48)
-        plyPanel.Kills:Dock(LEFT)
+        function plyPanel.Rank:Paint(w, h)
+            draw.DrawText(ply.usergroup, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        end
     
-        function plyPanel.Kills:Paint(w, h)
-            draw.DrawText(ply.kills, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        hw = hw - ((hw / 6) * 2)
+    
+        plyPanel.Ping = vgui.Create("DPanel", plyPanel)
+        plyPanel.Ping:SetSize(hw / 6, 48)
+        plyPanel.Ping:Dock(RIGHT)
+        
+        function plyPanel.Ping:Paint(w, h)
+            draw.DrawText(ply.ping, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
         end
 
         plyPanel.kda = vgui.Create("DPanel", plyPanel)
-        plyPanel.kda:SetSize(hw / 4, 48)
-        plyPanel.kda:Dock(LEFT)
+        plyPanel.kda:SetSize(hw / 6, 48)
+        plyPanel.kda:Dock(RIGHT)
         
         function plyPanel.kda:Paint(w, h)
             draw.DrawText(ply.kda, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
         end
-    
+
         plyPanel.Deaths = vgui.Create("DPanel", plyPanel)
-        plyPanel.Deaths:SetSize(hw / 4, 48)
-        plyPanel.Deaths:Dock(LEFT)
+        plyPanel.Deaths:SetSize(hw / 6, 48)
+        plyPanel.Deaths:Dock(RIGHT)
         
         function plyPanel.Deaths:Paint(w, h)
             draw.DrawText(ply.deaths, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
         end
+
+        plyPanel.Kills = vgui.Create("DPanel", plyPanel)
+        plyPanel.Kills:SetSize(hw / 6, 48)
+        plyPanel.Kills:Dock(RIGHT)
     
-        plyPanel.Ping = vgui.Create("DPanel", plyPanel)
-        plyPanel.Ping:SetSize(hw / 6, 48)
-        plyPanel.Ping:Dock(LEFT)
-        
-        function plyPanel.Ping:Paint(w, h)
-            draw.DrawText(ply.ping, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
+        function plyPanel.Kills:Paint(w, h)
+            draw.DrawText(ply.kills, "FCore_Open Sans_18_300", w - w / 2, h - h / 2 - 9, FCore.Colors.text, TEXT_ALIGN_CENTER)
         end
     end
 end
