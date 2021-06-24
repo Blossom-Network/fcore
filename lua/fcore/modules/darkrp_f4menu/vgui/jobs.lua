@@ -140,11 +140,11 @@ function PANEL:SetInfo(tbl)
     self.data.players = team.NumPlayers(self.data.jobId)
 
     surface.SetFont("FCore_Open Sans_18_500")
-    local tw, _ = surface.GetTextSize("$" .. self.data.price)
+    local tw, _ = surface.GetTextSize("$" .. self.data.salary)
     if tw > 56 then
-        self.cash:SetWide(tw + 8)
+        self.salary:SetWide(tw + 8)
     else
-        self.cash:SetWide(64)
+        self.salary:SetWide(64)
     end
 
     if istable(tbl.model) then
