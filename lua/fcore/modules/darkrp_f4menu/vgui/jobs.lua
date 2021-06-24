@@ -80,6 +80,24 @@ function PANEL:Init()
 
         draw.DrawText("Zmień Pracę", "FCore_Open Sans_18_700", w - w / 2, 10, FCore.Colors.text, TEXT_ALIGN_CENTER)
     end
+
+    self.closebtn = vgui.Create("DButton", self.container)
+    self.closebtn:SetSize(32, 32)
+    self.closebtn:SetPos(500 - 36, 4)
+    self.closebtn:SetText("")
+    self.closebtn.DoClick = function()
+        self:Close()
+        gui.EnableScreenClicker(false)
+    end
+
+    function self.closebtn:Paint()
+        local col = FCore.Colors.secondary
+
+        if self:IsHovered() then
+            col = Color(220, 220, 220)
+        end
+        draw.DrawText(utf8.char(0xf00d), "FCore_FontAwesome_18_300", 8, 6, col)
+    end
     
     function self.container:Paint(w, h)
         draw.RoundedBox(4, 0, 0, w, h, FCore.Colors.main)
