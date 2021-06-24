@@ -137,12 +137,14 @@ PANEL = {}
 
 function PANEL:SetInfo(tbl)
     self.data = tbl
-    self.data.players = 0
+    self.data.players = team.NumPlayers(self.data.jobId)
 
-    for _,ply in ipairs(player.GetAll()) do
-        if self.data.jobId == LocalPlayer():Team() then
-            self.data.players = self.data.players + 1
-        end
+    surface.SetFont("FCore_Open Sans_18_500")
+    local tw, _ = surface.GetTextSize("$" .. self.data.price)
+    if tw > 56 then
+        self.cash:SetWide(tw + 8)
+    else
+        self.cash:SetWide(64)
     end
 
     if istable(tbl.model) then
