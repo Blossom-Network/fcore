@@ -231,7 +231,9 @@ function FCore.HUD.drawOwnableInfo(ent)
     end
 
     local text = table.concat(doorInfo, "\n")
-    local tw, th = surface.GetTextSize(text, "FCore_Open Sans_18_300")
+
+    surface.SetFont("FCore_Open Sans_18_300")
+    local tw, th = surface.GetTextSize(text)
 
     if entType == "door" then
         cam.Start3D2D(ent:LocalToWorld(pos1 + ent:OBBCenter()), ent:LocalToWorldAngles(ang), 0.1)
