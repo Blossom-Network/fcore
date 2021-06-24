@@ -30,9 +30,9 @@ function FCore.HUD.Player()
             return
     end
 
-    local nickname = FCore.HUD.Text(LocalPlayer():Name(), 12)
+    local nickname = LocalPlayer():Name()
     surface.SetFont("FCore_Open Sans_16_300")
-    local _, nh = surface.GetTextSize(nickname)
+    local nw, nh = surface.GetTextSize(nickname)
 
     surface.SetFont("FCore_Open Sans_18_500")
     local sw, sh = surface.GetTextSize("ChillRP")
@@ -40,66 +40,75 @@ function FCore.HUD.Player()
     sw = sw + 32
     sh = sh + 8
 
+    local sow = 0
+
     // Background
     FCore.HUD.DrawBox(x + 8, y - sh, sw, sh, FCore.Colors.secondary, true, true, false, false)
-    FCore.HUD.DrawBox(x, y, w, h, FCore.Colors.secondary)
-    FCore.HUD.DrawBox(x, y, w / 3, h, FCore.Colors.main, true, false, true, false)
+    if nw + 16 >= 80 then
+        FCore.HUD.DrawBox(x + nw + 32, y, w - nw, h, FCore.Colors.secondary, false, true, false, true)
+        FCore.HUD.DrawBox(x, y, nw + 32, h, FCore.Colors.main, true, false, true, false)
+        sow = nw + 32
+    else
+        FCore.HUD.DrawBox(x, y, w - 8, h, FCore.Colors.secondary)
+        FCore.HUD.DrawBox(x, y, 80 + 16, h, FCore.Colors.main, true, false, true, false)
+        sow = 96
+    end
 
     draw.DrawText("ChillRP", "FCore_Open Sans_18_500", x + 8 + sw / 2, y - sh + 4, FCore.Colors.text, TEXT_ALIGN_CENTER)
 
     // Avatar
-    FCore.HUD.DrawBox(x + 16, y + 24, 76, 76, FCore.Colors.secondary)
+    FCore.HUD.DrawBox(x + sow / 2 - 76 / 2, y + 24, 76, 76, FCore.Colors.secondary)
     if !FCore.HUD.Avatar then
         FCore.HUD.Avatar = vgui.Create("AvatarImage")
         FCore.HUD.Avatar:SetSize(70, 70)
-        FCore.HUD.Avatar:SetPos(x + 19, y + 27)
         FCore.HUD.Avatar:SetPlayer(LocalPlayer(), 184)
         FCore.HUD.Avatar:SetPaintedManually(true)
         FCore.HUD.Avatar:ParentToHUD()
     end
+    FCore.HUD.Avatar:SetPos(x + sow / 2 - 70 / 2, y + 27)
     FCore.HUD.Avatar:PaintManual()
 
     // Nickname
-    FCore.HUD.DrawBox(x + (w / 3) / 2 - 40, y + h - nh * 2.25, 80, nh * 1.5, FCore.Colors.secondary, true, true, true, true, 4)
-    draw.DrawText(nickname, "FCore_Open Sans_16_500", x + (w / 3) / 2, y + h - nh * 2.25 + 3, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    FCore.HUD.DrawBox(x + sow / 2 - (nw + 8) / 2, y + h - nh * 2.25, nw + 8, nh * 1.5, FCore.Colors.secondary, true, true, true, true, 4)
+    draw.DrawText(nickname, "FCore_Open Sans_16_500", x + sow / 2, y + h - nh * 2.25 + 3, FCore.Colors.text, TEXT_ALIGN_CENTER)
 
     // Section HP
-    FCore.HUD.DrawBox(x + (w / 3) + 8, y + 8, 60, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
+    FCore.HUD.DrawBox(x + sow + 8, y + 8, 60, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
 
     // HP
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 17, y + 18, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.Colors.transparent)
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 17, y + 6 + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), FCore.Colors.health, "", "FCore_Open Sans_14_300", FCore.Colors.text)
+    FCore.HUD.DrawBarHorizontal(x + sow + 17, y + 18, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.Colors.transparent)
+    FCore.HUD.DrawBarHorizontal(x + sow + 17, y + 6 + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * math.min(LocalPlayer():Health() / LocalPlayer():GetMaxHealth(), 1), FCore.Colors.health, "", "FCore_Open Sans_14_300", FCore.Colors.text)
 
-    draw.DrawText(LocalPlayer():Health(), "FCore_Open Sans_12_300", x + (w / 3) + 16 + 9, y + FCore.HUD.Config.Size.h / 2 - 12, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    draw.DrawText(LocalPlayer():Health(), "FCore_Open Sans_12_300", x + sow + 16 + 9, y + FCore.HUD.Config.Size.h / 2 - 12, FCore.Colors.text, TEXT_ALIGN_CENTER)
 
-    FCore.HUD.DrawIcon(x + (w / 3) + 14, y + ((FCore.HUD.Config.Size.h - 16) - 13), "heart", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
+    FCore.HUD.DrawIcon(x + sow + 14, y + ((FCore.HUD.Config.Size.h - 16) - 13), "heart", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
 
     // Armor
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 41, y + 18, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.Colors.transparent)
-    FCore.HUD.DrawBarHorizontal(x + (w / 3) + 41, y + 6 + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), FCore.Colors.armor, LocalPlayer():Armor(), "FCore_Open Sans_14_300", FCore.Colors.text)
+    FCore.HUD.DrawBarHorizontal(x + sow + 41, y + 18, 18, (FCore.HUD.Config.Size.h - 16) - 32, FCore.Colors.secondary, "", "FCore_Open Sans_14_300", FCore.Colors.transparent)
+    FCore.HUD.DrawBarHorizontal(x + sow + 41, y + 6 + (FCore.HUD.Config.Size.h - 36) - ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), 18, ((FCore.HUD.Config.Size.h - 16) - 32) * (LocalPlayer():Armor() / 255), FCore.Colors.armor, LocalPlayer():Armor(), "FCore_Open Sans_14_300", FCore.Colors.text)
 
-    draw.DrawText(LocalPlayer():Armor(), "FCore_Open Sans_12_300", x + (w / 3) + 41 + 9, y + FCore.HUD.Config.Size.h / 2 - 12, FCore.Colors.text, TEXT_ALIGN_CENTER)
+    draw.DrawText(LocalPlayer():Armor(), "FCore_Open Sans_12_300", x + sow + 41 + 9, y + FCore.HUD.Config.Size.h / 2 - 12, FCore.Colors.text, TEXT_ALIGN_CENTER)
 
-    FCore.HUD.DrawIcon(x + (w / 3) + 41, y + ((FCore.HUD.Config.Size.h - 16) - 13), "armor", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
+    FCore.HUD.DrawIcon(x + sow + 41, y + ((FCore.HUD.Config.Size.h - 16) - 13), "armor", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
 
     // Section Info
-    FCore.HUD.DrawBox(x + (w / 3) + 76, y + 8, 133, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
+    FCore.HUD.DrawBox(x + sow + 76, y + 8, 133, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
 
     // Job
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 16, "suitcase", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
-    draw.DrawText(LocalPlayer():getDarkRPVar("job"), "FCore_Open Sans_16_300", x + (w / 3) + 110, y + 18, FCore.Colors.text)
+    FCore.HUD.DrawIconBox(x + sow + 84, y + 16, "suitcase", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
+    draw.DrawText(LocalPlayer():getDarkRPVar("job"), "FCore_Open Sans_16_300", x + sow + 110, y + 18, FCore.Colors.text)
 
     // Money
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 46, "cash", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
-    draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("money")), "FCore_Open Sans_16_300", x + (w / 3) + 110, y + 48, FCore.Colors.text)
+    FCore.HUD.DrawIconBox(x + sow + 84, y + 46, "cash", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
+    draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("money")), "FCore_Open Sans_16_300", x + sow + 110, y + 48, FCore.Colors.text)
 
     // Salary
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 78, "dollar", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
-    draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("salary")), "FCore_Open Sans_16_300", x + (w / 3) + 110, y + 80, FCore.Colors.text)
+    FCore.HUD.DrawIconBox(x + sow + 84, y + 78, "dollar", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
+    draw.DrawText(FCore.HUD.FormatMoney(LocalPlayer():getDarkRPVar("salary")), "FCore_Open Sans_16_300", x + sow + 110, y + 80, FCore.Colors.text)
 
     // Organisation
-    FCore.HUD.DrawIconBox(x + (w / 3) + 84, y + 112, "users", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
-    draw.DrawText("NULL", "FCore_Open Sans_16_300", x + (w / 3) + 110, y + 114, FCore.Colors.text)
+    FCore.HUD.DrawIconBox(x + sow + 84, y + 112, "users", 14, FCore.Colors.secondary, FCore.Colors.text, 0, 1, 12)
+    draw.DrawText("NULL", "FCore_Open Sans_16_300", x + sow + 110, y + 114, FCore.Colors.text)
 
     // License
     if LocalPlayer():getDarkRPVar("HasGunlicense") then
@@ -164,23 +173,83 @@ function FCore.HUD.drawOwnableInfo(ent)
 
     surface.SetFont("FCore_Open Sans_24_300")
 
+    local doorInfo = {}
+
+    local blocked = ent:getKeysNonOwnable()
+    local doorTeams = ent:getKeysDoorTeams()
+    local doorGroup = ent:getKeysDoorGroup()
+    local playerOwned = ent:isKeysOwned() or table.GetFirstValue(ent:getKeysCoOwners() or {}) ~= nil
+    local owned = playerOwned or doorGroup or doorTeams
+
+    local title = ent:getKeysTitle()
+    if title then table.insert(doorInfo, title) end
+
+    if owned then
+        table.insert(doorInfo, DarkRP.getPhrase("keys_owned_by"))
+    end
+
+    if playerOwned then
+        if ent:isKeysOwned() then table.insert(doorInfo, ent:getDoorOwner():Nick()) end
+        for k in pairs(ent:getKeysCoOwners() or {}) do
+            local ply = Player(k)
+            if not IsValid(ply) or not ply:IsPlayer() then continue end
+            table.insert(doorInfo, ply:Nick())
+        end
+
+        local allowedCoOwn = ent:getKeysAllowedToOwn()
+        if allowedCoOwn and not fn.Null(allowedCoOwn) then
+            table.insert(doorInfo, DarkRP.getPhrase("keys_other_allowed"))
+
+            for k in pairs(allowedCoOwn) do
+                local ply = Player(k)
+                if not IsValid(ply) or not ply:IsPlayer() then continue end
+                table.insert(doorInfo, ply:Nick())
+            end
+        end
+    elseif doorGroup then
+        table.insert(doorInfo, doorGroup)
+    elseif doorTeams then
+        for k, v in pairs(doorTeams) do
+            if not v or not RPExtraTeams[k] then continue end
+
+            table.insert(doorInfo, RPExtraTeams[k].name)
+        end
+    elseif blocked and changeDoorAccess then
+        table.insert(doorInfo, DarkRP.getPhrase("keys_allow_ownership"))
+    elseif not blocked then
+        table.insert(doorInfo, DarkRP.getPhrase("keys_unowned"))
+        if changeDoorAccess then
+            table.insert(doorInfo, DarkRP.getPhrase("keys_disallow_ownership"))
+        end
+    end
+
+    if ent:IsVehicle() then
+        local driver = ent:GetDriver()
+        if driver:IsPlayer() then
+            table.insert(doorInfo, DarkRP.getPhrase("driver", driver:Nick()))
+        end
+    end
+
+    local text = table.concat(doorInfo, "\n")
+    local tw, th = surface.GetTextSize(text, "FCore_Open Sans_18_300")
+
     if entType == "door" then
         cam.Start3D2D(ent:LocalToWorld(pos1 + ent:OBBCenter()), ent:LocalToWorldAngles(ang), 0.1)
-            draw.RoundedBox(4, -100, 25, 250, 50, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-158, 25, "user", 42, FCore.Colors.main, FCore.Colors.text, 10, 5, 32)
-            draw.DrawText(FCore.HUD.Text(ent:GetClass(), 18), "FCore_Open Sans_24_300", -100 + (250 / 2), 36, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
+            FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
+            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
         cam.End3D2D()
 
         cam.Start3D2D(ent:LocalToWorld(pos2 - ent:OBBCenter()), ent:LocalToWorldAngles(ang + Angle(0, 180, 0)), 0.1)
-            draw.RoundedBox(4, -100, 25, 250, 50, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-158, 25, "user", 42, FCore.Colors.main, FCore.Colors.text, 10, 5, 32)
-            draw.DrawText(FCore.HUD.Text(ent:GetClass(), 18), "FCore_Open Sans_24_300", -100 + (250 / 2), 36, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
+            FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
+            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
         cam.End3D2D()
     else
         cam.Start3D2D(pos1, ang, 0.2)
-            draw.RoundedBox(4, -100, 25, 250, 50, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-158, 25, "user", 42, FCore.Colors.main, FCore.Colors.text, 10, 5, 32)
-            draw.DrawText(FCore.HUD.Text(ent:GetClass(), 18), "FCore_Open Sans_24_300", -100 + (250 / 2), 36, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            draw.RoundedBox(4, -tw / 2, 25, tw, 10 + th, FCore.Colors.secondary)
+            FCore.HUD.DrawIconBox(-21, -30, "vehicle", 42, FCore.Colors.main, FCore.Colors.text, 3, 3, 32)
+            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
         cam.End3D2D()
     end
 end

@@ -67,5 +67,19 @@ FCore.HUD.Config.Icons = {
             x = 0,
             y = 0
         }
+    },
+    door = {
+        text = utf8.char(0xf19c),
+        margin = {
+            x = 0,
+            y = 0
+        }
+    },
+    vehicle = {
+        text = utf8.char(0xf1b9),
+        margin = {
+            x = 0,
+            y = 0
+        }
     }
 }
