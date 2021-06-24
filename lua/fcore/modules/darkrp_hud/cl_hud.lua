@@ -45,12 +45,12 @@ function FCore.HUD.Player()
     // Background
     FCore.HUD.DrawBox(x + 8, y - sh, sw, sh, FCore.Colors.secondary, true, true, false, false)
     if nw + 16 >= 80 then
-        FCore.HUD.DrawBox(x + nw + 32, y, w - nw, h, FCore.Colors.secondary, false, true, false, true)
+        FCore.HUD.DrawBox(x + nw + 32, y, w - w / 3, h, FCore.Colors.secondary, false, true, false, true)
         FCore.HUD.DrawBox(x, y, nw + 32, h, FCore.Colors.main, true, false, true, false)
         sow = nw + 32
     else
-        FCore.HUD.DrawBox(x, y, w - 8, h, FCore.Colors.secondary)
-        FCore.HUD.DrawBox(x, y, 80 + 16, h, FCore.Colors.main, true, false, true, false)
+        FCore.HUD.DrawBox(x + 96, y, w - w / 3, h, FCore.Colors.secondary, false, true, false, true)
+        FCore.HUD.DrawBox(x, y, 96, h, FCore.Colors.main, true, false, true, false)
         sow = 96
     end
 
@@ -92,6 +92,8 @@ function FCore.HUD.Player()
     FCore.HUD.DrawIcon(x + sow + 41, y + ((FCore.HUD.Config.Size.h - 16) - 13), "armor", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
 
     // Section Info
+    local padding = w - w / 3
+
     FCore.HUD.DrawBox(x + sow + 76, y + 8, 133, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
 
     // Job
