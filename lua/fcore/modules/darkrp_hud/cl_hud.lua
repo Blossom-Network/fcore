@@ -92,8 +92,6 @@ function FCore.HUD.Player()
     FCore.HUD.DrawIcon(x + sow + 41, y + ((FCore.HUD.Config.Size.h - 16) - 13), "armor", 12, FCore.Colors.secondary, TEXT_ALIGN_LEFT)
 
     // Section Info
-    local padding = w - w / 3
-
     FCore.HUD.DrawBox(x + sow + 76, y + 8, 133, FCore.HUD.Config.Size.h - 16, FCore.Colors.main)
 
     // Job
