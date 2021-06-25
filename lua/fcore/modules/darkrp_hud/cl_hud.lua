@@ -10,6 +10,9 @@ usermessage.Hook("GotArrested", function(msg)
 end)
 
 function FCore.HUD.Player()
+    if !IsValid(LocalPlayer()) then return end
+    if !LocalPlayer():getDarkRPVar("job") then return end
+
     local x = FCore.HUD.GetPos().x
     local y = FCore.HUD.GetPos().y
 
@@ -235,24 +238,26 @@ function FCore.HUD.drawOwnableInfo(ent)
     surface.SetFont("FCore_Open Sans_18_300")
     local tw, th = surface.GetTextSize(text)
 
-    if entType == "door" then
-        cam.Start3D2D(ent:LocalToWorld(pos1 + ent:OBBCenter()), ent:LocalToWorldAngles(ang), 0.1)
-            draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
-            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
-        cam.End3D2D()
+    if #doorInfo > 0 then
+        if entType == "door" then
+            cam.Start3D2D(ent:LocalToWorld(pos1 + ent:OBBCenter()), ent:LocalToWorldAngles(ang), 0.1)
+                draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
+                FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
+                draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            cam.End3D2D()
 
-        cam.Start3D2D(ent:LocalToWorld(pos2 - ent:OBBCenter()), ent:LocalToWorldAngles(ang + Angle(0, 180, 0)), 0.1)
-            draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
-            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
-        cam.End3D2D()
-    else
-        cam.Start3D2D(pos1, ang, 0.2)
-            draw.RoundedBox(4, -tw / 2, 25, tw, 10 + th, FCore.Colors.secondary)
-            FCore.HUD.DrawIconBox(-21, -30, "vehicle", 42, FCore.Colors.main, FCore.Colors.text, 3, 3, 32)
-            draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
-        cam.End3D2D()
+            cam.Start3D2D(ent:LocalToWorld(pos2 - ent:OBBCenter()), ent:LocalToWorldAngles(ang + Angle(0, 180, 0)), 0.1)
+                draw.RoundedBox(4, -(tw + 16) / 2, 25, tw + 16, 10 + th, FCore.Colors.secondary)
+                FCore.HUD.DrawIconBox(-24, -30, "door", 42, FCore.Colors.main, FCore.Colors.text, 5, 3, 32)
+                draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            cam.End3D2D()
+        else
+            cam.Start3D2D(pos1, ang, 0.2)
+                draw.RoundedBox(4, -tw / 2, 25, tw, 10 + th, FCore.Colors.secondary)
+                FCore.HUD.DrawIconBox(-21, -30, "vehicle", 42, FCore.Colors.main, FCore.Colors.text, 3, 3, 32)
+                draw.DrawText(text, "FCore_Open Sans_18_300", 0, 10 + th / 2, FCore.Colors.text, TEXT_ALIGN_CENTER)
+            cam.End3D2D()
+        end
     end
 end
 
