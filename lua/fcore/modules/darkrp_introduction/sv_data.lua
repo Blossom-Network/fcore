@@ -7,7 +7,7 @@ function FCore.Introduction.LoadPoints(_, ply)
     local map = game.GetMap()
 
     net.Start("fcore_loadpoints")
-    net.WriteTable(util.JSONToTable(file.Read("fcore/introduction/" .. map .. ".txt", "DATA")))
+    net.WriteTable(util.JSONToTable(file.Read("fcore/introduction/" .. map .. ".txt", "DATA")) or {})
     net.Send(ply)
 end
 

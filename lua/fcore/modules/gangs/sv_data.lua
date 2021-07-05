@@ -1,17 +1,24 @@
 FCore.Gangs = FCore.Gangs or {}
 FCore.Gangs.Instances = FCore.Gangs.Instances or {}
 
+util.AddNetworkString("fcore_creategang")
 util.AddNetworkString("fcore_getgangs")
 
 function FCore.Gangs.GetID()
     local files,_ = file.Find("fcore/gangs/*", "DATA")
 
-    return #files
+    table.sort(files, function(a, b) return a < b end)
+
+    if #files > 0 then
+        return string.Explode(".txt", files[#files])[1]
+    else
+        return 0
+    end
 end
 
-function FCore.CreateGang(owner, gangTable)
-    if !IsValid(owner) or !gangTable then
-        if owner:Gang() then return end
+function FCore.Gangs.CreateGang(owner, gangTable)
+    if IsValid(owner) and gangTable then
+        if owner:Gang() > 0 then return end
 
         gangTable = {
             id = FCore.Gangs.GetID() + 1,
@@ -33,7 +40,7 @@ function FCore.CreateGang(owner, gangTable)
     end
 end
 
-function FCore.RemoveGang(ply)
+function FCore.Gangs.RemoveGang(ply)
     if !IsValid(ply) then
         local gang = FCore.Gangs.Instances[owner:Gang()]
 
@@ -73,4 +80,11 @@ function FCore.Gangs.SendGangsBroadcast()
     net.Broadcast(ply)
 end
 
+net.Receive("fcore_creategang", function(len, ply)
+    local gangTable = net.ReadTable()
+
+    if IsValid(ply) then
+        FCore.Gangs.CreateGang(ply, gangTable)
+    end
+end)
 net.Receive("fcore_getgangs", FCore.Gangs.SendGangs)
