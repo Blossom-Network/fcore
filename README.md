@@ -1,3 +1,4 @@
+# This repository is no longer maintained as of 1st July 2022.
 
 # FCore
 Standalone Open Source AIO DarkRP server package created by [fizi](https://github.com/fizioterapia).
